@@ -37,12 +37,6 @@ const arrow = (direction = 'diagonal') => {
   return `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="${path}" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 };
 
-const projectArt = [
-  '<rect x="114" y="14" width="92" height="92" rx="15" transform="rotate(45 160 60)"/><rect x="129" y="29" width="62" height="62" rx="9" transform="rotate(45 160 60)"/><rect x="144" y="44" width="32" height="32" rx="4" transform="rotate(45 160 60)"/><circle cx="160" cy="60" r="3" fill="currentColor"/>',
-  '<ellipse cx="160" cy="60" rx="65" ry="32" transform="rotate(-26 160 60)"/><ellipse cx="160" cy="60" rx="65" ry="32" transform="rotate(26 160 60)"/><ellipse cx="160" cy="60" rx="28" ry="51"/><circle cx="160" cy="60" r="5" fill="currentColor"/>',
-  '<path d="M104 96V72h28V48h28V24h56M104 107V83h28V59h28V35h56M104 85V61h28V37h28V13h56"/><circle cx="207" cy="82" r="13"/><path d="M207 64v36m-18-18h36"/>',
-];
-
 function projectCard({ titulo, descripcion, categoria, url, imagen }, i, projectImages) {
   const field = `proyectos[${i}]`;
   const title = entryText(titulo, `${field}.titulo`, true);
@@ -52,10 +46,9 @@ function projectCard({ titulo, descripcion, categoria, url, imagen }, i, project
   const filename = typeof imagen === 'string' ? imagen.trim() : '';
   const cover = projectImages.has(filename)
     ? `<img src="./proyectos/${escape(encodeURIComponent(filename))}" alt="" loading="lazy" decoding="async">`
-    : `<span>${index(i)} /</span>
-      <svg viewBox="0 0 320 120" fill="none" stroke="currentColor" stroke-width="1.3">${projectArt[i % projectArt.length]}</svg>`;
+    : `<span>${index(i)} /</span>`;
   return `<li class="project-card">
-    <div class="project-art art-${i % projectArt.length}" aria-hidden="true">
+    <div class="project-art" aria-hidden="true">
       ${cover}
     </div>
     <div class="project-content">
@@ -134,15 +127,14 @@ export function render({ nombre, apellido, intro, rol, contacto, proyectos = [],
   <main id="contenido">
     <section class="shell hero" aria-labelledby="nombre">
       <div class="hero-copy">
-        <p class="mono kicker"><span class="signal" aria-hidden="true"></span> Portfolio personal</p>
+        <p class="mono kicker">Portfolio personal</p>
         <h1 id="nombre">${escape(nombre)}<br>${escape(apellido)}<span>.</span></h1>
-        ${rol ? `<p class="hero-role">${escape(rol)}</p>\n        ` : ''}<p class="hero-intro">${escape(intro)}</p>
-        ${contactHref ? `<div class="hero-actions"><a class="primary-action" href="${contactHref}">Escríbeme ${arrow()}</a>
-        <a class="primary-action secondary-action" href="#proyectos">Ver proyectos ${arrow('down')}</a></div>` : `<a class="primary-action" href="#proyectos">Ver proyectos ${arrow('down')}</a>`}
+        <div class="hero-details">
+          ${rol ? `<p class="hero-role">${escape(rol)}</p>\n          ` : ''}<p class="hero-intro">${escape(intro)}</p>
+          ${contactHref ? `<div class="hero-actions"><a class="primary-action" href="${contactHref}">Escríbeme ${arrow()}</a>
+          <a class="primary-action secondary-action" href="#proyectos">Ver proyectos ${arrow('down')}</a></div>` : `<a class="primary-action" href="#proyectos">Ver proyectos ${arrow('down')}</a>`}
+        </div>
       </div>
-      <figure class="hero-art" aria-hidden="true">
-        <img src="./estudio.svg" width="420" height="342" alt="">
-      </figure>
     </section>
     <section class="shell work" id="proyectos" aria-labelledby="proyectos-titulo">
       <div class="section-head">
