@@ -78,15 +78,16 @@ function shortcut({ titulo, descripcion, url }, i) {
   }</li>`;
 }
 
-export function render({ nombre, apellido, intro, proyectos = [], enlaces = [] }, projectImages = new Set()) {
+export function render({ nombre, apellido, intro, rol, contacto, proyectos = [], enlaces = [] }, projectImages = new Set()) {
   const fullName = escape(`${nombre} ${apellido}`);
   const initials = escape(nombre.charAt(0) + apellido.charAt(0));
+  const contactHref = destination(contacto, 'contacto');
   return `<!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="${escape(intro)}">
+  <meta name="description" content="${escape(rol || intro)}">
   <meta name="robots" content="noindex">
   <meta name="theme-color" content="#f5f2ea">
   <title>${fullName} — Portfolio personal</title>
@@ -99,10 +100,11 @@ export function render({ nombre, apellido, intro, proyectos = [], enlaces = [] }
   <a class="skip" href="#contenido">Saltar al contenido</a>
   <header class="masthead">
     <div class="shell masthead-inner">
-      <a class="brand mono" href="#inicio" aria-label="${fullName}, inicio">${initials}<span>.</span></a>
+      <a class="brand mono" href="#inicio" aria-label="${initials}. ${fullName}, inicio">${initials}<span>.</span></a>
       <nav aria-label="Principal">
         <a href="#proyectos">Proyectos</a>
-        <a href="#enlaces">Enlaces</a>
+        <a href="#enlaces">Enlaces</a>${contactHref ? `
+        <a class="nav-contact" href="${contactHref}">Escríbeme ${arrow()}</a>` : ''}
       </nav>
     </div>
   </header>
@@ -111,8 +113,9 @@ export function render({ nombre, apellido, intro, proyectos = [], enlaces = [] }
       <div class="hero-copy">
         <p class="mono kicker"><span class="signal" aria-hidden="true"></span> Portfolio personal</p>
         <h1 id="nombre">${escape(nombre)}<br>${escape(apellido)}<span>.</span></h1>
-        <p class="hero-intro">${escape(intro)}</p>
-        <a class="primary-action" href="#proyectos">Ver proyectos ${arrow('down')}</a>
+        ${rol ? `<p class="hero-role">${escape(rol)}</p>\n        ` : ''}<p class="hero-intro">${escape(intro)}</p>
+        ${contactHref ? `<div class="hero-actions"><a class="primary-action" href="${contactHref}">Escríbeme ${arrow()}</a>
+        <a class="primary-action secondary-action" href="#proyectos">Ver proyectos ${arrow('down')}</a></div>` : `<a class="primary-action" href="#proyectos">Ver proyectos ${arrow('down')}</a>`}
       </div>
       <figure class="hero-art" aria-hidden="true">
         <img src="./estudio.svg" width="420" height="342" alt="">
@@ -141,7 +144,7 @@ export function render({ nombre, apellido, intro, proyectos = [], enlaces = [] }
   </main>
   <footer class="shell footer">
     <p class="mono">${fullName} <span aria-hidden="true">/</span> Portfolio personal</p>
-    <a href="#inicio">Volver arriba ${arrow('up')}</a>
+    ${contactHref ? `<a href="${contactHref}">Escríbeme: ${escape(contacto.trim().replace(/^mailto:/i, '').split('?')[0])}</a>\n    ` : ''}<a href="#inicio">Volver arriba ${arrow('up')}</a>
   </footer>
 </body>
 </html>

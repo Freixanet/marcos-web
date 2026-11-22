@@ -1,7 +1,9 @@
 {
   "nombre": "Marcos",
   "apellido": "Freixanet",
-  "intro": "Un sitio para reunir lo que hago, lo que estoy explorando y lo que quiero tener a mano.",
+  "rol": "Construyo productos completos con Swift, TypeScript y Python, desde Barcelona.",
+  "intro": "Apps de iPhone, webs, y los servidores y agentes que hay detrás.",
+  "contacto": "mailto:mfreixanet@icloud.com",
   "proyectos": [
     {
       "titulo": "Un proyecto propio",
@@ -23,8 +25,7 @@
     }
   ],
   "enlaces": [
-    { "titulo": "Perfiles", "descripcion": "Los sitios donde encontrarme", "url": "" },
-    { "titulo": "Recursos", "descripcion": "Material que quiero tener a mano", "url": "" },
-    { "titulo": "Contacto", "descripcion": "Una forma de escribirme", "url": "" }
+    { "titulo": "Perfiles", "descripcion": "GitHub", "url": "https://github.com/Freixanet" },
+    { "titulo": "Recursos", "descripcion": "Material que quiero tener a mano", "url": "" }
   ]
 }

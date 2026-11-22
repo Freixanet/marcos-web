@@ -10,9 +10,11 @@ Portfolio personal en español, con una sección de proyectos y otra para guarda
 
 | Sección | Obligatorios | Opcionales |
 | --- | --- | --- |
-| Presentación | `nombre`, `apellido`, `intro` | — |
+| Presentación | `nombre`, `apellido`, `intro` | `rol`, `contacto` |
 | Cada proyecto | `titulo` | `descripcion`, `categoria`, `url`, `imagen` |
 | Cada enlace | `titulo` | `descripcion`, `url` |
+
+`rol` aparece destacado en la portada y en la descripción para buscadores. Para mostrar «Escríbeme» en la cabecera, la portada y el pie, usa una dirección `mailto:` en `contacto`.
 
 En `url` usa una dirección completa con `https:`, `http:` o `mailto:`. Si aún no tienes un destino, omite `url` o escribe `""` para mostrar la ficha como texto.
 
