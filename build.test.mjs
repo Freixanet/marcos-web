@@ -1,4 +1,8 @@
 import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import { copyFile, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import test from 'node:test';
 import { render } from './build.mjs';
 
@@ -71,8 +75,53 @@ test('configured links work, and editable content is escaped', () => {
 
 test('unsafe schemes fail the build', () => {
   for (const url of ['javascript:alert(1)', 'data:text/html,hello']) {
-    assert.throws(() => render({ ...profile, enlaces: [{ ...shortcut, url }] }), /Usa una URL/);
+    assert.throws(() => render({ ...profile, enlaces: [{ ...shortcut, url }] }), /contenido\.json → enlaces\[0\]\.url: usa una URL/);
   }
+});
+
+test('invalid entries identify the exact field to edit', () => {
+  for (const url of ['grafana.com', null]) {
+    assert.throws(
+      () => render({ ...profile, proyectos: [project, { ...project, url }] }),
+      /contenido\.json → proyectos\[1\]\.url: usa una URL/,
+    );
+  }
+  assert.throws(
+    () => render({ ...profile, enlaces: [shortcut, { url: 'https://example.com' }] }),
+    /contenido\.json → enlaces\[1\]\.titulo: escribe un texto no vacío/,
+  );
+});
+
+test('minimal entries only render their titles and link state', () => {
+  const html = render({ ...profile, proyectos: [{ titulo: 'Mapa' }], enlaces: [{ titulo: 'Notas' }] });
+  assert.match(html, /<h3>Mapa<\/h3>/);
+  assert.match(html, /<strong>Notas<\/strong><\/span>/);
+  assert.doesNotMatch(html, /class="mono category"|<p><\/p>/);
+});
+
+test('the build copies existing covers and illustrates cards with no cover', async t => {
+  const root = await mkdtemp(join(tmpdir(), 'marcos-build-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const filename = 'Portada móvil.svg';
+  const cover = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><rect width="1" height="1"/></svg>';
+  await mkdir(join(root, 'site', 'proyectos'), { recursive: true });
+  for (const file of ['build.mjs', 'site.config.mjs', 'site/styles.css']) {
+    await copyFile(new URL(file, import.meta.url), join(root, file));
+  }
+  await writeFile(join(root, 'site', 'proyectos', filename), cover);
+  await writeFile(join(root, 'contenido.json'), JSON.stringify({
+    ...profile,
+    proyectos: [{ ...project, imagen: filename }, project, { ...project, imagen: 'no-existe.webp' }],
+  }));
+
+  execFileSync(process.execPath, [join(root, 'build.mjs')]);
+
+  const html = await readFile(join(root, 'dist', 'index.html'), 'utf8');
+  assert.match(html, /<img src="\.\/proyectos\/Portada%20m%C3%B3vil\.svg" alt="" loading="lazy"/);
+  assert.doesNotMatch(html, /no-existe.webp/);
+  assert.match(html, /<span>02 \/<\/span>/);
+  assert.match(html, /<span>03 \/<\/span>/);
+  assert.equal(await readFile(join(root, 'dist', 'proyectos', filename), 'utf8'), cover);
 });
 
 test('empty sections still have navigation targets', () => {
