@@ -9,6 +9,8 @@ Edita [`contenido.json`](contenido.json). Sustituye los ejemplos por tus proyect
 | Sección | Campos |
 | --- | --- |
 | Presentación | `nombre`, `apellido`, `intro` |
+| Rol (opcional) | `rol`: línea destacada en portada y descripción para buscadores |
+| Contacto (opcional) | `contacto`: URL `mailto:` para los enlaces «Escríbeme» en cabecera, portada y pie |
 | `proyectos` | `titulo`, `descripcion`, `categoria`, `url` |
 | `enlaces` | `titulo`, `descripcion`, `url` |
 
