@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="342" viewBox="0 0 420 342" fill="none">
+  <defs>
+    <pattern id="grid" width="19" height="19" patternUnits="userSpaceOnUse">
+      <path d="M19 0H0V19" stroke="#756c5d" stroke-opacity=".4" stroke-width=".7"/>
+    </pattern>
+    <clipPath id="plot">
+      <path d="M36 42h348v236H36z"/>
+    </clipPath>
+  </defs>
+  <rect x=".5" y=".5" width="419" height="341" rx="7.5" fill="#272621" stroke="#4b4438"/>
+  <path d="M36 42h348v236H36z" fill="url(#grid)" stroke="#736a5b" stroke-width=".7"/>
+  <g clip-path="url(#plot)">
+    <circle cx="210" cy="160" r="84" fill="#d96b47"/>
+    <path d="M36 160h348M210 42v236" stroke="#e1cfac" stroke-opacity=".56" stroke-width=".85" stroke-dasharray="3 5"/>
+    <g stroke="#f4d8b3" stroke-width=".85">
+      <circle cx="210" cy="160" r="97"/>
+      <circle cx="210" cy="160" r="108" stroke-opacity=".6"/>
+      <ellipse cx="210" cy="160" rx="134" ry="50" transform="rotate(-31 210 160)"/>
+      <ellipse cx="210" cy="160" rx="134" ry="50" transform="rotate(31 210 160)"/>
+      <ellipse cx="210" cy="160" rx="41" ry="97"/>
+      <path d="M113 160h194"/>
+    </g>
+    <circle cx="210" cy="160" r="8" fill="#272621" stroke="#f4d8b3"/>
+    <circle cx="210" cy="160" r="2" fill="#f4d8b3"/>
+    <circle cx="315" cy="144" r="3" fill="#f4d8b3"/>
+    <circle cx="126" cy="111" r="3" fill="#f4d8b3"/>
+    <path d="M61 70v14m-7-7h14m291 167v14m-7-7h14" stroke="#d96b47"/>
+  </g>
+  <path d="M36 51v-9h9m330 0h9v9M36 269v9h9m330 0h9v-9M36 298h348" stroke="#f4d8b3" stroke-opacity=".72" stroke-width=".8"/>
+  <g fill="#e2cdb0" font-family="monospace" font-size="9" letter-spacing="1.7">
+    <text x="36" y="26">ARCHIVO PERSONAL</text>
+    <text x="384" y="26" text-anchor="end">FIG. 01</text>
+    <text x="36" y="321">UN LUGAR PARA TODO</text>
+    <text x="384" y="321" text-anchor="end">M / F</text>
+  </g>
+</svg>
