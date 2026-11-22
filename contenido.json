@@ -1,0 +1,30 @@
+{
+  "nombre": "Marcos",
+  "apellido": "Freixanet",
+  "intro": "Un sitio para reunir lo que hago, lo que estoy explorando y lo que quiero tener a mano.",
+  "proyectos": [
+    {
+      "titulo": "Un proyecto propio",
+      "descripcion": "Para algo que hayas construido y quieras enseñar.",
+      "categoria": "Construir",
+      "url": ""
+    },
+    {
+      "titulo": "Una idea en marcha",
+      "descripcion": "Para una idea que todavía estés investigando o probando.",
+      "categoria": "Explorar",
+      "url": ""
+    },
+    {
+      "titulo": "Algo que aprendí",
+      "descripcion": "Para un experimento, un apunte o algo que quieras compartir.",
+      "categoria": "Compartir",
+      "url": ""
+    }
+  ],
+  "enlaces": [
+    { "titulo": "Perfiles", "descripcion": "Los sitios donde encontrarme", "url": "" },
+    { "titulo": "Recursos", "descripcion": "Material que quiero tener a mano", "url": "" },
+    { "titulo": "Contacto", "descripcion": "Una forma de escribirme", "url": "" }
+  ]
+}
