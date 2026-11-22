@@ -99,7 +99,7 @@ test('minimal entries only render their titles and link state', () => {
   assert.doesNotMatch(html, /class="mono category"|<p><\/p>/);
 });
 
-test('the build copies existing covers and illustrates cards with no cover', async t => {
+test('the build copies existing covers and numbers projects with no cover', async t => {
   const root = await mkdtemp(join(tmpdir(), 'marcos-build-'));
   t.after(() => rm(root, { recursive: true, force: true }));
   const filename = 'Portada móvil.svg';
