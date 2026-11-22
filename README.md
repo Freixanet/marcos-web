@@ -62,3 +62,7 @@ El resultado está en `dist/`. Puedes publicarlo tal cual en un alojamiento est�
 [`site.config.mjs`](site.config.mjs) define la URL pública de respaldo (la vista previa de Devin). Para otro dominio, ejecuta `SITE_URL=https://tu-dominio.es npm run build`. Se utiliza para `og:url` y las imágenes absolutas de Open Graph y Twitter. El alojamiento debe permitir el acceso público a la página y a `og-image.jpg` para que los rastreadores puedan leerlos; una vista previa con inicio de sesión no genera tarjetas públicas.
 
 La tarjeta está en [`site/og-image.jpg`](site/og-image.jpg) (1200 × 630). El build incorpora la hoja CSS pequeña al HTML para evitar una petición bloqueante; no carga JavaScript ni fuentes externas.
+
+## Tipografía
+
+Esta variante de revista clásica usa Georgia para titulares y texto, y Helvetica Neue o Arial para navegación y etiquetas. Son fuentes del sistema: no se descargan fuentes web. Los archivos de Geist, IBM Plex Sans y Martian Mono de la variante de `main` se conservan en `site/fonts/`, pero no se cargan en esta propuesta. Sus fuentes y licencias SIL Open Font License están documentadas en [`site/fonts/README.md`](site/fonts/README.md).
