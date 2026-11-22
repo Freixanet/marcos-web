@@ -37,11 +37,17 @@ const arrow = (direction = 'diagonal') => {
   return `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="${path}" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 };
 
-const projectArt = [
-  '<rect x="114" y="14" width="92" height="92" rx="15" transform="rotate(45 160 60)"/><rect x="129" y="29" width="62" height="62" rx="9" transform="rotate(45 160 60)"/><rect x="144" y="44" width="32" height="32" rx="4" transform="rotate(45 160 60)"/><circle cx="160" cy="60" r="3" fill="currentColor"/>',
-  '<ellipse cx="160" cy="60" rx="65" ry="32" transform="rotate(-26 160 60)"/><ellipse cx="160" cy="60" rx="65" ry="32" transform="rotate(26 160 60)"/><ellipse cx="160" cy="60" rx="28" ry="51"/><circle cx="160" cy="60" r="5" fill="currentColor"/>',
-  '<path d="M104 96V72h28V48h28V24h56M104 107V83h28V59h28V35h56M104 85V61h28V37h28V13h56"/><circle cx="207" cy="82" r="13"/><path d="M207 64v36m-18-18h36"/>',
-];
+const pixelIcon = (kind = 'folder') => {
+  const shapes = {
+    folder: '<path fill="#fff5b0" d="M3 8h11l3 4h13v17H3z"/><path fill="#edc45e" d="M2 13h29v17H2z"/><path d="M3 8h11l3 4h13v18H2V13h28M4 15h24M5 28h22"/>',
+    computer: '<path fill="#d2d2c7" d="M5 2h23v21H5zM13 23h7v4h-7zM3 27h28v4H3z"/><path fill="#003d50" d="M8 5h17v14H8z"/><path stroke="#75e6d7" d="m11 9 3 3-3 3m6 0h5"/><path d="M5 2h23v21H5zM3 27h28v4H3z"/>',
+    globe: '<circle cx="16" cy="16" r="14" fill="#4283d1"/><path fill="#78be83" stroke="none" d="m8 5 7-2 3 5-5 5-7-1-3 7 5 5 2-6 6 2 1 9 6-3 1-8 6-2-2-7-6 2-3-7z"/><circle cx="16" cy="16" r="14"/><path d="M3 16h26M16 2c-9 8-9 20 0 28 9-8 9-20 0-28z"/>',
+    document: '<path fill="#fffff6" d="M6 2h15l7 7v22H6z"/><path fill="#c2c2bb" d="M21 2v7h7"/><path d="M6 2h15l7 7v22H6zM21 2v7h7M10 14h13m-13 5h13m-13 5h9"/>',
+  };
+  return `<svg class="pixel-icon" viewBox="0 0 34 34" fill="none" stroke="#202b35" stroke-width="2" stroke-linejoin="miter" shape-rendering="crispEdges" aria-hidden="true">${shapes[kind] || shapes.folder}</svg>`;
+};
+
+const windowTitle = (title, icon = 'document') => `<div class="window-title" aria-hidden="true"><span>${pixelIcon(icon)}${title}</span><span class="window-marks"><i></i><i></i><i></i></span></div>`;
 
 function projectCard({ titulo, descripcion, categoria, url, imagen }, i, projectImages) {
   const field = `proyectos[${i}]`;
@@ -53,9 +59,9 @@ function projectCard({ titulo, descripcion, categoria, url, imagen }, i, project
   const cover = projectImages.has(filename)
     ? `<img src="./proyectos/${escape(encodeURIComponent(filename))}" alt="" loading="lazy" decoding="async">`
     : `<span>${index(i)} /</span>
-      <svg viewBox="0 0 320 120" fill="none" stroke="currentColor" stroke-width="1.3">${projectArt[i % projectArt.length]}</svg>`;
+      ${pixelIcon(['folder', 'globe', 'document'][i % 3])}`;
   return `<li class="project-card">
-    <div class="project-art art-${i % projectArt.length}" aria-hidden="true">
+    <div class="project-art" aria-hidden="true">
       ${cover}
     </div>
     <div class="project-content">
@@ -74,8 +80,8 @@ function shortcut({ titulo, descripcion, url }, i) {
   const href = destination(url, `${field}.url`);
   const label = `<span class="shortcut-label"><strong>${title}</strong>${description ? `<span>${description}</span>` : ''}</span>`;
   return `<li>${href
-    ? `<a class="shortcut" href="${href}">${label}${arrow()}</a>`
-    : `<div class="shortcut">${label}<span class="shortcut-status">Sin enlace aún</span></div>`
+    ? `<a class="shortcut" href="${href}">${pixelIcon('globe')}${label}${arrow()}</a>`
+    : `<div class="shortcut">${pixelIcon('folder')}${label}<span class="shortcut-status">Sin enlace aún</span></div>`
   }</li>`;
 }
 
@@ -98,7 +104,7 @@ export function render({ nombre, apellido, intro, rol, contacto, proyectos = [],
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="${escape(rol || intro)}">
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#f5f2ea">
+  <meta name="theme-color" content="#087f82">
   <title>${fullName} — Portfolio personal</title>
   <meta property="og:title" content="${fullName} — Portfolio personal">
   <meta property="og:description" content="${escape(intro)}">
@@ -123,7 +129,7 @@ export function render({ nombre, apellido, intro, rol, contacto, proyectos = [],
   <a class="skip" href="#contenido">Saltar al contenido</a>
   <header class="masthead">
     <div class="shell masthead-inner">
-      <a class="brand mono" href="#inicio" aria-label="${initials}. ${fullName}, inicio">${initials}<span>.</span></a>
+      <a class="brand mono" href="#inicio" aria-label="${initials}. ${fullName}, inicio">${pixelIcon('computer')}<span>${initials} / OS</span></a>
       <nav aria-label="Principal">
         <a href="#proyectos">Proyectos</a>
         <a href="#enlaces">Enlaces</a>${contactHref ? `
@@ -131,20 +137,34 @@ export function render({ nombre, apellido, intro, rol, contacto, proyectos = [],
       </nav>
     </div>
   </header>
-  <main id="contenido">
-    <section class="shell hero" aria-labelledby="nombre">
+  <div class="desktop-label" aria-hidden="true"><span>ESCRITORIO PERSONAL</span><span>VOL. 01 — BARCELONA</span></div>
+  <aside class="desktop-icons" aria-label="Accesos del escritorio">
+    <a href="#contenido">${pixelIcon('computer')}<span>Mi espacio</span></a>
+    <a href="#proyectos">${pixelIcon('folder')}<span>Proyectos</span></a>
+    <a href="#enlaces">${pixelIcon('globe')}<span>Mis enlaces</span></a>
+  </aside>
+  <main id="contenido" class="desktop">
+    <section class="shell hero window" aria-labelledby="nombre">
+      ${windowTitle('sobre_mi.txt — Bloc de notas')}
+      <div class="window-menu" aria-hidden="true">Archivo <span>Edición</span> <span>Ver</span></div>
+      <div class="hero-body">
       <div class="hero-copy">
-        <p class="mono kicker"><span class="signal" aria-hidden="true"></span> Portfolio personal</p>
+        <p class="mono kicker">Hola, soy</p>
         <h1 id="nombre">${escape(nombre)}<br>${escape(apellido)}<span>.</span></h1>
         ${rol ? `<p class="hero-role">${escape(rol)}</p>\n        ` : ''}<p class="hero-intro">${escape(intro)}</p>
         ${contactHref ? `<div class="hero-actions"><a class="primary-action" href="${contactHref}">Escríbeme ${arrow()}</a>
         <a class="primary-action secondary-action" href="#proyectos">Ver proyectos ${arrow('down')}</a></div>` : `<a class="primary-action" href="#proyectos">Ver proyectos ${arrow('down')}</a>`}
       </div>
       <figure class="hero-art" aria-hidden="true">
-        <img src="./estudio.svg" width="420" height="342" alt="">
+        <img src="./retro-computer.svg" width="240" height="250" alt="">
+        <figcaption>Ideas dentro.<br>Productos fuera.</figcaption>
       </figure>
+      </div>
+      <div class="window-status"><span>Portfolio personal</span><span>Listo para crear.</span></div>
     </section>
-    <section class="shell work" id="proyectos" aria-labelledby="proyectos-titulo">
+    <section class="shell work window" id="proyectos" aria-labelledby="proyectos-titulo">
+      ${windowTitle('C:\\Marcos\\Proyectos', 'folder')}
+      <div class="explorer-address" aria-hidden="true"><span>Dirección</span><span>${pixelIcon('folder')} Mi espacio / Proyectos</span></div>
       <div class="section-head">
         <div>
           <p class="mono kicker"><span>01 /</span> Lo que hago</p>
@@ -153,8 +173,10 @@ export function render({ nombre, apellido, intro, rol, contacto, proyectos = [],
         <p>${proyectos.length ? 'Un espacio para trabajos, ideas y experimentos.' : 'Todavía no hay proyectos publicados.'}</p>
       </div>
       ${proyectos.length ? `<ul class="project-grid" role="list">${proyectos.map((project, i) => projectCard(project, i, projectImages)).join('')}</ul>` : ''}
+      <div class="window-status"><span>${proyectos.length} objetos</span><span>Trabajos, ideas y experimentos</span></div>
     </section>
-    <section class="shelf" id="enlaces" aria-labelledby="enlaces-titulo">
+    <section class="shelf window" id="enlaces" aria-labelledby="enlaces-titulo">
+      ${windowTitle('Favoritos', 'globe')}
       <div class="shell shelf-inner">
         <div>
           <p class="mono kicker"><span>02 /</span> Accesos directos</p>
@@ -163,12 +185,15 @@ export function render({ nombre, apellido, intro, rol, contacto, proyectos = [],
         </div>
         ${enlaces.length ? `<ul class="shortcut-list" role="list">${enlaces.map(shortcut).join('')}</ul>` : '<p>Todavía no hay enlaces publicados.</p>'}
       </div>
+      <div class="window-status"><span>${enlaces.length} accesos directos</span></div>
+      <div class="desktop-sticker" aria-hidden="true"><span>HECHO CON</span><strong>curiosidad<span>®</span></strong><span>Y UNAS CUANTAS IDEAS</span></div>
     </section>
   </main>
   <footer class="shell footer">
     <p class="mono">${fullName} <span aria-hidden="true">/</span> Portfolio personal</p>
     ${contactHref ? `<a href="${contactHref}">Escríbeme: ${escape(contacto.trim().replace(/^mailto:/i, '').split('?')[0])}</a>\n    ` : ''}<a href="#inicio">Volver arriba ${arrow('up')}</a>
   </footer>
+  <div class="taskbar" aria-hidden="true"><span class="start-label">${pixelIcon('computer')} Inicio</span><span class="task-active">${pixelIcon('document')} Portfolio personal</span><span class="taskbar-status"><span></span> Barcelona</span></div>
 </body>
 </html>
 `;
