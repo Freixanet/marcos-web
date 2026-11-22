@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="440" viewBox="0 0 640 440" fill="none">
+  <defs>
+    <pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(24)">
+      <path d="M0 0v5" stroke="#191919" stroke-width=".8"/>
+    </pattern>
+    <pattern id="fine" width="4" height="4" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r=".65" fill="#191919"/>
+    </pattern>
+    <clipPath id="orb"><circle cx="459" cy="270" r="83"/></clipPath>
+  </defs>
+  <path fill="#f3f3f1" d="M57 45h527v326H57z"/>
+  <path d="M82 389h487M94 402h461" stroke="#191919" stroke-width="1.4"/>
+  <path d="m128 369 146-60 233 52-141 53-238-45Z" fill="#fff" stroke="#191919" stroke-width="1.4"/>
+  <path d="m128 356 146-60 233 52-141 53-238-45Z" fill="#fff" stroke="#191919" stroke-width="1.4"/>
+  <path d="m128 343 146-60 233 52-141 53-238-45Z" fill="#191919"/>
+  <path d="m145 343 131-48 210 41-123 42-218-35Z" fill="url(#hatch)" stroke="#fff" stroke-width=".6"/>
+  <path d="m188 310 80-30 99 23-80 29-99-22Z" fill="#fff" stroke="#191919" stroke-width="1.4"/>
+  <path d="M188 297v13l99 22v-14l-99-21Zm99 21v14l80-29v-13l-80 28Z" fill="#fff" stroke="#191919" stroke-width="1.4"/>
+  <path d="m188 297 80-30 99 23-80 28-99-21Z" fill="#fff" stroke="#191919" stroke-width="1.4"/>
+  <path d="M211 274v19l75 15 58-22v-17" fill="#fff" stroke="#191919" stroke-width="1.4"/>
+  <ellipse cx="278" cy="271" rx="67" ry="18" fill="#fff" stroke="#191919" stroke-width="1.4"/>
+  <path d="M226 121v147c0 15 105 15 105 0V121" fill="#fff" stroke="#191919" stroke-width="1.4"/>
+  <path d="M235 126v141m9-139v143m10-140v142m12-139v140m13-139v140m13-141v140m12-143v141m11-143v140m9-142v140" stroke="#191919"/>
+  <path d="M249 131v140m24-136v139m24-140v138m24-144v141" stroke="#191919" stroke-width="3"/>
+  <ellipse cx="278" cy="121" rx="53" ry="16" fill="#fff" stroke="#191919" stroke-width="1.4"/>
+  <path d="M216 105v16c0 20 125 20 125 0v-16" fill="#fff" stroke="#191919" stroke-width="1.4"/>
+  <ellipse cx="278" cy="105" rx="63" ry="19" fill="#fff" stroke="#191919" stroke-width="1.4"/>
+  <path d="m201 92 74-27 84 18-73 29-85-20Z" fill="#fff" stroke="#191919" stroke-width="1.4"/>
+  <path d="M201 92v11l85 20v-11l-85-20Zm85 20v11l73-29V83l-73 29Z" fill="url(#hatch)" stroke="#191919" stroke-width="1.4"/>
+  <path d="m196 79 79-29 89 20-78 30-90-21Z" fill="#fff" stroke="#191919" stroke-width="1.4"/>
+  <path d="M196 79v9l90 21v-9l-90-21Zm90 21v9l78-30v-9l-78 30Z" fill="#fff" stroke="#191919" stroke-width="1.4"/>
+  <circle cx="459" cy="270" r="83" fill="#fff" stroke="#191919" stroke-width="1.4"/>
+  <g clip-path="url(#orb)">
+    <ellipse cx="480" cy="268" rx="55" ry="83" fill="url(#fine)"/>
+    <path d="M415 194c41 24 41 129 0 153m15-160c43 28 43 137 0 165m16-168c43 32 43 143 0 170m17-170c41 37 41 143 0 170m17-166c37 38 37 133 0 161m17-152c30 39 30 116 0 142m15-126c20 31 20 86 0 111" stroke="#191919" stroke-width="1.1"/>
+    <path d="M376 270h166m-162-22h158m-150-22h141m-126-22h110m-133 88h158m-149 22h140m-125 22h110" stroke="#191919" stroke-width=".6"/>
+  </g>
+  <circle cx="465" cy="111" r="57" fill="#b1212d"/>
+  <path d="M465 72v78m-39-39h78m-67-28 56 56m0-56-56 56" stroke="#fff" stroke-width="2"/>
+  <path d="M107 84v116m-12-58h24M528 357h24m-12-12v24" stroke="#b1212d" stroke-width="1.5"/>
+  <path d="M100 249h58m-58 7h40m-40 7h50" stroke="#191919" stroke-width=".7"/>
+</svg>

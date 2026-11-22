@@ -65,4 +65,4 @@ La tarjeta está en [`site/og-image.jpg`](site/og-image.jpg) (1200 × 630). El b
 
 ## Tipografía
 
-La combinación está inspirada en desmodus.co: Geist para titulares, IBM Plex Sans para texto y Martian Mono para etiquetas. Las fuentes variables WOFF2 se sirven desde `site/fonts/`, sin peticiones a Google ni a Desmodus. Los subconjuntos latinos incluyen los acentos del español. Sus fuentes y licencias SIL Open Font License están documentadas en [`site/fonts/README.md`](site/fonts/README.md).
+Esta variante de revista clásica usa Georgia para titulares y texto, y Helvetica Neue o Arial para navegación y etiquetas. Son fuentes del sistema: no se descargan fuentes web. Los archivos de Geist, IBM Plex Sans y Martian Mono de la variante de `main` se conservan en `site/fonts/`, pero no se cargan en esta propuesta. Sus fuentes y licencias SIL Open Font License están documentadas en [`site/fonts/README.md`](site/fonts/README.md).
