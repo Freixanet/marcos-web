@@ -135,7 +135,7 @@ export function render({ nombre, apellido, intro, rol, contacto, proyectos = [],
     <section class="shell hero" aria-labelledby="nombre">
       <div class="hero-heading">
         <p class="mono kicker">Portfolio personal</p>
-        <h1 id="nombre">${escape(nombre)} <em>${escape(apellido)}</em><span>.</span></h1>
+        <h1 id="nombre">${escape(nombre)} <em>${escape(apellido)}<span>.</span></em></h1>
       </div>
       <div class="hero-copy">
         ${rol ? `<p class="hero-role">${escape(rol)}</p>\n        ` : ''}<p class="hero-intro">${escape(intro)}</p>

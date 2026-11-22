@@ -43,7 +43,7 @@ nav a { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; f
 .hero-heading .kicker { color: var(--accent); justify-content: center; }
 .hero h1 { font-size: clamp(3.3rem, 8.7vw, 8.6rem); font-weight: 400; line-height: 1.12; letter-spacing: -.065em; margin-top: 8px; overflow-wrap: anywhere; }
 .hero h1 em { font-weight: 400; }
-.hero h1 > span { color: var(--accent); }
+.hero h1 span { color: var(--accent); }
 .hero-copy { align-self: center; padding-block: 14px; }
 .hero-role { max-width: 23ch; font-size: clamp(1.7rem, 2.75vw, 2.65rem); line-height: 1.18; letter-spacing: -.035em; }
 .hero-role::first-letter { color: var(--accent); }
