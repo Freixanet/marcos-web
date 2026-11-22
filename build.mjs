@@ -98,7 +98,7 @@ export function render({ nombre, apellido, intro, rol, contacto, proyectos = [],
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="${escape(rol || intro)}">
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#f5f2ea">
+  <meta name="theme-color" content="#101311">
   <title>${fullName} — Portfolio personal</title>
   <meta property="og:title" content="${fullName} — Portfolio personal">
   <meta property="og:description" content="${escape(intro)}">
