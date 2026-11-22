@@ -1,5 +1,6 @@
 import { cp, mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
+import { siteUrl } from './site.config.mjs';
 
 const entities = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
 const escape = (value = '') => value.replace(/[&<>"']/g, char => entities[char]);
@@ -78,10 +79,18 @@ function shortcut({ titulo, descripcion, url }, i) {
   }</li>`;
 }
 
-export function render({ nombre, apellido, intro, rol, contacto, proyectos = [], enlaces = [] }, projectImages = new Set()) {
+export function render({ nombre, apellido, intro, rol, contacto, proyectos = [], enlaces = [] }, { url = siteUrl, styles, projectImages = new Set() } = {}) {
   const fullName = escape(`${nombre} ${apellido}`);
   const initials = escape(nombre.charAt(0) + apellido.charAt(0));
   const contactHref = destination(contacto, 'contacto');
+  const pageUrl = new URL(url);
+  if (!['https:', 'http:'].includes(pageUrl.protocol) || pageUrl.username || pageUrl.password) {
+    throw new Error('SITE_URL debe ser una URL pública con https: o http:.');
+  }
+  pageUrl.hash = '';
+  pageUrl.search = '';
+  if (!pageUrl.pathname.endsWith('/')) pageUrl.pathname += '/';
+  const imageUrl = new URL('og-image.jpg', pageUrl);
   return `<!doctype html>
 <html lang="es">
 <head>
@@ -91,10 +100,24 @@ export function render({ nombre, apellido, intro, rol, contacto, proyectos = [],
   <meta name="robots" content="noindex">
   <meta name="theme-color" content="#f5f2ea">
   <title>${fullName} — Portfolio personal</title>
+  <meta property="og:title" content="${fullName} — Portfolio personal">
+  <meta property="og:description" content="${escape(intro)}">
+  <meta property="og:image" content="${escape(imageUrl.href)}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:alt" content="Portfolio personal de ${fullName}: proyectos, ideas y enlaces.">
+  <meta property="og:url" content="${escape(pageUrl.href)}">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${fullName} — Portfolio personal">
+  <meta name="twitter:description" content="${escape(intro)}">
+  <meta name="twitter:image" content="${escape(imageUrl.href)}">
   <link rel="icon" href="./icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="./icon-192.png">
   <link rel="manifest" href="./site.webmanifest" crossorigin="use-credentials">
-  <link rel="stylesheet" href="./styles.css">
+  ${styles ? `<style>${styles}</style>` : '<link rel="stylesheet" href="./styles.css">'}
 </head>
 <body id="inicio">
   <a class="skip" href="#contenido">Saltar al contenido</a>
@@ -162,12 +185,13 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     throw new Error(`contenido.json: ${error.message}`, { cause: error });
   }
   const source = new URL('site/', root);
+  const styles = await readFile(new URL('styles.css', source), 'utf8');
   const files = await readdir(new URL('proyectos/', source), { withFileTypes: true }).catch(error => {
     if (error.code === 'ENOENT') return [];
     throw error;
   });
   const projectImages = new Set(files.filter(file => file.isFile() && coverExtensions.test(file.name)).map(file => file.name));
-  const page = render(data, projectImages);
+  const page = render(data, { styles, projectImages });
   await mkdir(output, { recursive: true });
   await cp(source, output, { recursive: true });
   await writeFile(new URL('index.html', output), page);
