@@ -36,6 +36,7 @@ svg { flex-shrink: 0; }
 .brand span { color: var(--accent); }
 nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: clamp(10px, 3vw, 36px); }
 nav a, .footer a { display: inline-flex; align-items: center; min-height: 44px; font-size: .8125rem; text-decoration: none; }
+nav a { min-width: 44px; }
 .nav-contact { gap: 8px; color: var(--accent); }
 
 .hero { padding-block: clamp(48px, 6vw, 88px) clamp(64px, 8vw, 112px); }
