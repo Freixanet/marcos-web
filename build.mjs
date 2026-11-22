@@ -38,9 +38,9 @@ const arrow = (direction = 'diagonal') => {
 };
 
 const projectArt = [
-  '<rect x="114" y="14" width="92" height="92" rx="15" transform="rotate(45 160 60)"/><rect x="129" y="29" width="62" height="62" rx="9" transform="rotate(45 160 60)"/><rect x="144" y="44" width="32" height="32" rx="4" transform="rotate(45 160 60)"/><circle cx="160" cy="60" r="3" fill="currentColor"/>',
-  '<ellipse cx="160" cy="60" rx="65" ry="32" transform="rotate(-26 160 60)"/><ellipse cx="160" cy="60" rx="65" ry="32" transform="rotate(26 160 60)"/><ellipse cx="160" cy="60" rx="28" ry="51"/><circle cx="160" cy="60" r="5" fill="currentColor"/>',
-  '<path d="M104 96V72h28V48h28V24h56M104 107V83h28V59h28V35h56M104 85V61h28V37h28V13h56"/><circle cx="207" cy="82" r="13"/><path d="M207 64v36m-18-18h36"/>',
+  '<g transform="rotate(-7 160 60)"><rect x="125" y="15" width="58" height="88" rx="8" fill="#fff8e9"/><path d="M142 22h24m-17 74h10"/><rect x="132" y="33" width="44" height="49" rx="3"/><path d="m141 57 9 9 17-20"/></g><path d="m201 80 10-50 6 2-10 50-5 8-1-10Zm10-50 1-5a3 3 0 0 1 6 2l-1 5M105 99h120M106 36l-5-5m2 15h-8m18-19v-7"/>',
+  '<path d="M149 81c-1-12-18-16-18-34a29 29 0 0 1 58 0c0 18-17 22-18 34Z" fill="#fff8e9"/><path d="M148 87h24m-22 6h20m-15 6h10m-11-19V58l-10-8m22 30V58l10-8m-22 8h12M160 9V2m-41 18-7-6m-2 32h-10m20 26-8 5m89-57 7-6m2 32h10m-20 26 8 5"/>',
+  '<path d="M160 38c-17-13-38-14-61-11l4 65c20-3 40-1 57 10 17-11 37-13 57-10l4-65c-23-3-44-2-61 11Z" fill="#fff8e9"/><path d="M160 38v64m-49-58c13-1 25 2 36 7m-35 7c12-1 23 2 35 7m-34 7c12 0 23 3 34 7m27-28c10-5 20-7 33-7m-33 21c10-5 20-7 32-7m-32 21c11-4 20-6 31-7m-75-56 8-10m22 14V6m23 11 8-10"/>',
 ];
 
 function projectCard({ titulo, descripcion, categoria, url, imagen }, i, projectImages) {
@@ -98,7 +98,7 @@ export function render({ nombre, apellido, intro, rol, contacto, proyectos = [],
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="${escape(rol || intro)}">
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#f5f2ea">
+  <meta name="theme-color" content="#faf3e7">
   <title>${fullName} — Portfolio personal</title>
   <meta property="og:title" content="${fullName} — Portfolio personal">
   <meta property="og:description" content="${escape(intro)}">
