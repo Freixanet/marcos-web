@@ -76,7 +76,7 @@ export function render({ nombre, apellido, intro, proyectos = [], enlaces = [] }
   <a class="skip" href="#contenido">Saltar al contenido</a>
   <header class="masthead">
     <div class="shell masthead-inner">
-      <a class="brand mono" href="#inicio" aria-label="${fullName}, inicio">${initials}<span>.</span></a>
+      <a class="brand mono" href="#inicio" aria-label="${initials}. ${fullName}, inicio">${initials}<span>.</span></a>
       <nav aria-label="Principal">
         <a href="#proyectos">Proyectos</a>
         <a href="#enlaces">Enlaces</a>
