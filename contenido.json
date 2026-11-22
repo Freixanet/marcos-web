@@ -26,7 +26,6 @@
   ],
   "enlaces": [
     { "titulo": "Perfiles", "descripcion": "GitHub", "url": "https://github.com/Freixanet" },
-    { "titulo": "Recursos", "descripcion": "Material que quiero tener a mano", "url": "" },
-    { "titulo": "Contacto", "descripcion": "Una forma de escribirme", "url": "mailto:mfreixanet@icloud.com" }
+    { "titulo": "Recursos", "descripcion": "Material que quiero tener a mano", "url": "" }
   ]
 }
