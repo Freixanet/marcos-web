@@ -1,36 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="420" height="342" viewBox="0 0 420 342" fill="none">
-  <defs>
-    <pattern id="grid" width="19" height="19" patternUnits="userSpaceOnUse">
-      <path d="M19 0H0V19" stroke="#756c5d" stroke-opacity=".4" stroke-width=".7"/>
-    </pattern>
-    <clipPath id="plot">
-      <path d="M36 42h348v236H36z"/>
-    </clipPath>
-  </defs>
-  <rect x=".5" y=".5" width="419" height="341" rx="7.5" fill="#272621" stroke="#4b4438"/>
-  <path d="M36 42h348v236H36z" fill="url(#grid)" stroke="#736a5b" stroke-width=".7"/>
-  <g clip-path="url(#plot)">
-    <circle cx="210" cy="160" r="84" fill="#d96b47"/>
-    <path d="M36 160h348M210 42v236" stroke="#e1cfac" stroke-opacity=".56" stroke-width=".85" stroke-dasharray="3 5"/>
-    <g stroke="#f4d8b3" stroke-width=".85">
-      <circle cx="210" cy="160" r="97"/>
-      <circle cx="210" cy="160" r="108" stroke-opacity=".6"/>
-      <ellipse cx="210" cy="160" rx="134" ry="50" transform="rotate(-31 210 160)"/>
-      <ellipse cx="210" cy="160" rx="134" ry="50" transform="rotate(31 210 160)"/>
-      <ellipse cx="210" cy="160" rx="41" ry="97"/>
-      <path d="M113 160h194"/>
-    </g>
-    <circle cx="210" cy="160" r="8" fill="#272621" stroke="#f4d8b3"/>
-    <circle cx="210" cy="160" r="2" fill="#f4d8b3"/>
-    <circle cx="315" cy="144" r="3" fill="#f4d8b3"/>
-    <circle cx="126" cy="111" r="3" fill="#f4d8b3"/>
-    <path d="M61 70v14m-7-7h14m291 167v14m-7-7h14" stroke="#d96b47"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 460" fill="none">
+  <rect x="4" y="4" width="452" height="452" rx="76" fill="#E6EAFF"/>
+  <circle cx="351" cy="111" r="69" fill="#F6B8DF"/>
+  <path d="M55 337h92v92H55z" fill="#E7FF70"/>
+  <path d="M64 337v92m17-92v92m17-92v92m17-92v92m17-92v92" stroke="#3046D7" stroke-width="2"/>
+  <g transform="rotate(-8 210 216)">
+    <rect x="49" y="99" width="312" height="241" rx="20" fill="#3046D7"/>
+    <rect x="49" y="89" width="312" height="241" rx="20" fill="#FFF" stroke="#3046D7" stroke-width="3"/>
+    <path d="M50 129h309" stroke="#3046D7" stroke-width="3"/>
+    <g fill="#3046D7"><circle cx="70" cy="109" r="4"/><circle cx="84" cy="109" r="4"/><circle cx="98" cy="109" r="4"/></g>
+    <rect x="68" y="148" width="157" height="162" rx="12" fill="#E7FF70"/>
+    <path d="m145 174 13 30 32-10-13 31 29 17-33 5 2 34-27-20-23 25-3-34-34 1 25-23-21-26 34 6z" fill="#3046D7"/>
+    <rect x="245" y="151" width="94" height="70" rx="12" fill="#F6B8DF"/>
+    <path d="M252 245h77m-77 17h59m-59 17h68" stroke="#3046D7" stroke-width="5" stroke-linecap="round"/>
+    <path d="m270 180 11 11 28-28" stroke="#3046D7" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
-  <path d="M36 51v-9h9m330 0h9v9M36 269v9h9m330 0h9v-9M36 298h348" stroke="#f4d8b3" stroke-opacity=".72" stroke-width=".8"/>
-  <g fill="#e2cdb0" font-family="monospace" font-size="9" letter-spacing="1.7">
-    <text x="36" y="26">ARCHIVO PERSONAL</text>
-    <text x="384" y="26" text-anchor="end">FIG. 01</text>
-    <text x="36" y="321">UN LUGAR PARA TODO</text>
-    <text x="384" y="321" text-anchor="end">M / F</text>
+  <g transform="rotate(12 341 310)">
+    <rect x="277" y="220" width="123" height="191" rx="24" fill="#3046D7"/>
+    <rect x="285" y="228" width="107" height="175" rx="17" fill="#FAFBFF"/>
+    <rect x="319" y="235" width="39" height="5" rx="2.5" fill="#3046D7"/>
+    <rect x="295" y="253" width="87" height="87" rx="14" fill="#FF936D"/>
+    <circle cx="338.5" cy="296.5" r="27" stroke="#3046D7" stroke-width="3"/>
+    <path d="m327 297 8 8 17-19" stroke="#3046D7" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M299 355h72m-72 12h51" stroke="#3046D7" stroke-width="4" stroke-linecap="round"/>
+    <rect x="318" y="387" width="41" height="4" rx="2" fill="#3046D7"/>
   </g>
+  <path d="m386 40 4 17 18-4-12 14 12 13-18-3-4 17-5-17-17 3 11-13-11-14 17 4z" fill="#3046D7"/>
+  <circle cx="82" cy="58" r="10" fill="#FF936D"/>
 </svg>
