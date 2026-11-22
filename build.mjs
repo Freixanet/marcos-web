@@ -38,9 +38,9 @@ const arrow = (direction = 'diagonal') => {
 };
 
 const projectArt = [
-  '<rect x="114" y="14" width="92" height="92" rx="15" transform="rotate(45 160 60)"/><rect x="129" y="29" width="62" height="62" rx="9" transform="rotate(45 160 60)"/><rect x="144" y="44" width="32" height="32" rx="4" transform="rotate(45 160 60)"/><circle cx="160" cy="60" r="3" fill="currentColor"/>',
-  '<ellipse cx="160" cy="60" rx="65" ry="32" transform="rotate(-26 160 60)"/><ellipse cx="160" cy="60" rx="65" ry="32" transform="rotate(26 160 60)"/><ellipse cx="160" cy="60" rx="28" ry="51"/><circle cx="160" cy="60" r="5" fill="currentColor"/>',
-  '<path d="M104 96V72h28V48h28V24h56M104 107V83h28V59h28V35h56M104 85V61h28V37h28V13h56"/><circle cx="207" cy="82" r="13"/><path d="M207 64v36m-18-18h36"/>',
+  '<path d="M130 20h60v80h-60z" fill="currentColor" stroke="none"/><path d="M120 40h80M120 60h80M120 80h80" stroke="var(--surface)" stroke-width="3"/>',
+  '<circle cx="145" cy="55" r="30" stroke-width="13"/><path d="m165 78 30 30" stroke-width="13"/>',
+  '<path d="m112 70 48-48 48 48M112 104l48-48 48 48" stroke-width="14"/>',
 ];
 
 function projectCard({ titulo, descripcion, categoria, url, imagen }, i, projectImages) {
@@ -98,7 +98,7 @@ export function render({ nombre, apellido, intro, rol, contacto, proyectos = [],
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="${escape(rol || intro)}">
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#f5f2ea">
+  <meta name="theme-color" content="#e63326">
   <title>${fullName} — Portfolio personal</title>
   <meta property="og:title" content="${fullName} — Portfolio personal">
   <meta property="og:description" content="${escape(intro)}">
@@ -133,16 +133,22 @@ export function render({ nombre, apellido, intro, rol, contacto, proyectos = [],
   </header>
   <main id="contenido">
     <section class="shell hero" aria-labelledby="nombre">
-      <div class="hero-copy">
-        <p class="mono kicker"><span class="signal" aria-hidden="true"></span> Portfolio personal</p>
+      <div class="hero-topline mono"><p>Portfolio personal</p><span aria-hidden="true">Diseño + desarrollo</span></div>
+      <div class="hero-heading">
         <h1 id="nombre">${escape(nombre)}<br>${escape(apellido)}<span>.</span></h1>
+        <figure class="hero-art" aria-hidden="true">
+          <svg viewBox="0 0 400 400" fill="none"><path fill="var(--accent)" d="M0 0h400v400H0z"/><circle cx="200" cy="200" r="125" fill="var(--surface)"/><path d="m-40 340 380-380 100 100L60 440z" fill="var(--text)"/></svg>
+          <figcaption><span>MF /</span><span>Forma &amp; función</span></figcaption>
+        </figure>
+      </div>
+      <div class="hero-copy">
+        <p class="mono kicker"><span aria-hidden="true">00 /</span> Presentación</p>
+        <div class="hero-summary">
         ${rol ? `<p class="hero-role">${escape(rol)}</p>\n        ` : ''}<p class="hero-intro">${escape(intro)}</p>
+        </div>
         ${contactHref ? `<div class="hero-actions"><a class="primary-action" href="${contactHref}">Escríbeme ${arrow()}</a>
         <a class="primary-action secondary-action" href="#proyectos">Ver proyectos ${arrow('down')}</a></div>` : `<a class="primary-action" href="#proyectos">Ver proyectos ${arrow('down')}</a>`}
       </div>
-      <figure class="hero-art" aria-hidden="true">
-        <img src="./estudio.svg" width="420" height="342" alt="">
-      </figure>
     </section>
     <section class="shell work" id="proyectos" aria-labelledby="proyectos-titulo">
       <div class="section-head">
