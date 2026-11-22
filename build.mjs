@@ -143,7 +143,7 @@ export function render({ nombre, apellido, intro, rol, contacto, proyectos = [],
         <a class="primary-action secondary-action" href="#proyectos">Ver proyectos ${arrow('down')}</a></div>` : `<a class="primary-action" href="#proyectos">Ver proyectos ${arrow('down')}</a>`}
       </div>
       <figure class="hero-art" aria-hidden="true">
-        <img src="./estudio.svg" width="420" height="342" alt="">
+        <img src="./estudio.svg" width="420" height="420" alt="">
       </figure>
     </section>
     <section class="shell work" id="proyectos" aria-labelledby="proyectos-titulo">
