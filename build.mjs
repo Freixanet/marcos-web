@@ -98,7 +98,7 @@ export function render({ nombre, apellido, intro, rol, contacto, proyectos = [],
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="${escape(rol || intro)}">
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#f5f2ea">
+  <meta name="theme-color" content="#ffffff">
   <title>${fullName} — Portfolio personal</title>
   <meta property="og:title" content="${fullName} — Portfolio personal">
   <meta property="og:description" content="${escape(intro)}">
@@ -133,15 +133,17 @@ export function render({ nombre, apellido, intro, rol, contacto, proyectos = [],
   </header>
   <main id="contenido">
     <section class="shell hero" aria-labelledby="nombre">
+      <div class="hero-heading">
+        <p class="mono kicker">Portfolio personal</p>
+        <h1 id="nombre">${escape(nombre)} <em>${escape(apellido)}</em><span>.</span></h1>
+      </div>
       <div class="hero-copy">
-        <p class="mono kicker"><span class="signal" aria-hidden="true"></span> Portfolio personal</p>
-        <h1 id="nombre">${escape(nombre)}<br>${escape(apellido)}<span>.</span></h1>
         ${rol ? `<p class="hero-role">${escape(rol)}</p>\n        ` : ''}<p class="hero-intro">${escape(intro)}</p>
         ${contactHref ? `<div class="hero-actions"><a class="primary-action" href="${contactHref}">Escríbeme ${arrow()}</a>
         <a class="primary-action secondary-action" href="#proyectos">Ver proyectos ${arrow('down')}</a></div>` : `<a class="primary-action" href="#proyectos">Ver proyectos ${arrow('down')}</a>`}
       </div>
       <figure class="hero-art" aria-hidden="true">
-        <img src="./estudio.svg" width="420" height="342" alt="">
+        <img src="./editorial.svg" width="640" height="440" alt="">
       </figure>
     </section>
     <section class="shell work" id="proyectos" aria-labelledby="proyectos-titulo">
