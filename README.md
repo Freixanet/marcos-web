@@ -65,4 +65,4 @@ La tarjeta está en [`site/og-image.jpg`](site/og-image.jpg) (1200 × 630). El b
 
 ## Tipografía
 
-La combinación está inspirada en desmodus.co: Geist para titulares, IBM Plex Sans para texto y Martian Mono para etiquetas. Las fuentes variables WOFF2 se sirven desde `site/fonts/`, sin peticiones a Google ni a Desmodus. Los subconjuntos latinos incluyen los acentos del español. Sus fuentes y licencias SIL Open Font License están documentadas en [`site/fonts/README.md`](site/fonts/README.md).
+Esta variante de cartel suizo usa la pila de sistema Helvetica Neue, Helvetica y Arial para conservar su composición tipográfica sin descargar fuentes. Los archivos de Geist, IBM Plex Sans y Martian Mono de la versión original siguen disponibles en `site/fonts/`, con sus licencias en [`site/fonts/README.md`](site/fonts/README.md), pero no se cargan en este prototipo.
