@@ -117,6 +117,8 @@ export function render({ nombre, apellido, intro, rol, contacto, proyectos = [],
   <link rel="icon" href="./icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="./icon-192.png">
   <link rel="manifest" href="./site.webmanifest" crossorigin="use-credentials">
+  <link rel="preload" href="./fonts/geist-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./fonts/ibm-plex-sans-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
   ${styles ? `<style>${styles}</style>` : '<link rel="stylesheet" href="./styles.css">'}
 </head>
 <body id="inicio">
