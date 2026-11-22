@@ -1,16 +1,28 @@
-import { cp, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { cp, mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 
 const entities = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
 const escape = (value = '') => value.replace(/[&<>"']/g, char => entities[char]);
 const index = (i) => String(i + 1).padStart(2, '0');
 
-function destination(url = '') {
+const coverExtensions = /\.(avif|jpe?g|png|svg|webp)$/i;
+
+function entryText(value = '', field, required = false) {
+  if (typeof value !== 'string' || (required && !value.trim())) {
+    throw new Error(`contenido.json → ${field}: ${required ? 'escribe un texto no vacío' : 'usa un texto entre comillas'}.`);
+  }
+  return escape(value.trim());
+}
+
+function destination(url = '', field) {
+  const message = `contenido.json → ${field}: usa una URL completa con https:, http: o mailto:, o deja "".`;
+  if (typeof url !== 'string') throw new Error(message);
   const value = url.trim();
   if (!value) return '';
+  if (!URL.canParse(value)) throw new Error(message);
   const parsed = new URL(value);
   if (!['https:', 'http:', 'mailto:'].includes(parsed.protocol)) {
-    throw new Error('Usa una URL con https:, http: o mailto:.');
+    throw new Error(message);
   }
   return escape(parsed.href);
 }
@@ -30,32 +42,43 @@ const projectArt = [
   '<path d="M104 96V72h28V48h28V24h56M104 107V83h28V59h28V35h56M104 85V61h28V37h28V13h56"/><circle cx="207" cy="82" r="13"/><path d="M207 64v36m-18-18h36"/>',
 ];
 
-function projectCard({ titulo, descripcion, categoria, url }, i) {
-  const href = destination(url);
+function projectCard({ titulo, descripcion, categoria, url, imagen }, i, projectImages) {
+  const field = `proyectos[${i}]`;
+  const title = entryText(titulo, `${field}.titulo`, true);
+  const description = entryText(descripcion, `${field}.descripcion`);
+  const category = entryText(categoria, `${field}.categoria`);
+  const href = destination(url, `${field}.url`);
+  const filename = typeof imagen === 'string' ? imagen.trim() : '';
+  const cover = projectImages.has(filename)
+    ? `<img src="./proyectos/${escape(encodeURIComponent(filename))}" alt="" loading="lazy" decoding="async">`
+    : `<span>${index(i)} /</span>
+      <svg viewBox="0 0 320 120" fill="none" stroke="currentColor" stroke-width="1.3">${projectArt[i % projectArt.length]}</svg>`;
   return `<li class="project-card">
     <div class="project-art art-${i % projectArt.length}" aria-hidden="true">
-      <span>${index(i)} /</span>
-      <svg viewBox="0 0 320 120" fill="none" stroke="currentColor" stroke-width="1.3">${projectArt[i % projectArt.length]}</svg>
+      ${cover}
     </div>
     <div class="project-content">
-      <p class="mono category">${escape(categoria)}</p>
-      <h3>${escape(titulo)}</h3>
-      <p>${escape(descripcion)}</p>
-      ${href ? `<a class="project-link" href="${href}">Ver proyecto<span class="sr-only">: ${escape(titulo)}</span> ${arrow()}</a>` : '<span class="project-status">Sin enlace aún</span>'}
+      ${category ? `<p class="mono category">${category}</p>` : ''}
+      <h3>${title}</h3>
+      ${description ? `<p>${description}</p>` : ''}
+      ${href ? `<a class="project-link" href="${href}">Ver proyecto<span class="sr-only">: ${title}</span> ${arrow()}</a>` : '<span class="project-status">Sin enlace aún</span>'}
     </div>
   </li>`;
 }
 
-function shortcut({ titulo, descripcion, url }) {
-  const href = destination(url);
-  const label = `<span class="shortcut-label"><strong>${escape(titulo)}</strong><span>${escape(descripcion)}</span></span>`;
+function shortcut({ titulo, descripcion, url }, i) {
+  const field = `enlaces[${i}]`;
+  const title = entryText(titulo, `${field}.titulo`, true);
+  const description = entryText(descripcion, `${field}.descripcion`);
+  const href = destination(url, `${field}.url`);
+  const label = `<span class="shortcut-label"><strong>${title}</strong>${description ? `<span>${description}</span>` : ''}</span>`;
   return `<li>${href
     ? `<a class="shortcut" href="${href}">${label}${arrow()}</a>`
     : `<div class="shortcut">${label}<span class="shortcut-status">Sin enlace aún</span></div>`
   }</li>`;
 }
 
-export function render({ nombre, apellido, intro, proyectos = [], enlaces = [] }) {
+export function render({ nombre, apellido, intro, proyectos = [], enlaces = [] }, projectImages = new Set()) {
   const fullName = escape(`${nombre} ${apellido}`);
   const initials = escape(nombre.charAt(0) + apellido.charAt(0));
   return `<!doctype html>
@@ -103,7 +126,7 @@ export function render({ nombre, apellido, intro, proyectos = [], enlaces = [] }
         </div>
         <p>${proyectos.length ? 'Un espacio para trabajos, ideas y experimentos.' : 'Todavía no hay proyectos publicados.'}</p>
       </div>
-      ${proyectos.length ? `<ul class="project-grid" role="list">${proyectos.map(projectCard).join('')}</ul>` : ''}
+      ${proyectos.length ? `<ul class="project-grid" role="list">${proyectos.map((project, i) => projectCard(project, i, projectImages)).join('')}</ul>` : ''}
     </section>
     <section class="shelf" id="enlaces" aria-labelledby="enlaces-titulo">
       <div class="shell shelf-inner">
@@ -128,9 +151,21 @@ export function render({ nombre, apellido, intro, proyectos = [], enlaces = [] }
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const root = new URL('./', import.meta.url);
   const output = new URL('dist/', root);
-  const data = JSON.parse(await readFile(new URL('contenido.json', root), 'utf8'));
-  const page = render(data);
+  const input = await readFile(new URL('contenido.json', root), 'utf8');
+  let data;
+  try {
+    data = JSON.parse(input);
+  } catch (error) {
+    throw new Error(`contenido.json: ${error.message}`, { cause: error });
+  }
+  const source = new URL('site/', root);
+  const files = await readdir(new URL('proyectos/', source), { withFileTypes: true }).catch(error => {
+    if (error.code === 'ENOENT') return [];
+    throw error;
+  });
+  const projectImages = new Set(files.filter(file => file.isFile() && coverExtensions.test(file.name)).map(file => file.name));
+  const page = render(data, projectImages);
   await mkdir(output, { recursive: true });
-  await cp(new URL('site/', root), output, { recursive: true });
+  await cp(source, output, { recursive: true });
   await writeFile(new URL('index.html', output), page);
 }

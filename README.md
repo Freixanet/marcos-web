@@ -4,15 +4,42 @@ Portfolio personal en español, con una sección de proyectos y otra para guarda
 
 ## Añadir proyectos y enlaces
 
-Edita [`contenido.json`](contenido.json). Sustituye los ejemplos por tus proyectos y enlaces, o bórralos si aún no los necesitas.
+1. Abre [`contenido.json`](contenido.json). Para añadir un proyecto o un enlace, copia uno de los bloques `{ ... }` dentro de `proyectos` o `enlaces` y cambia sus valores.
+2. Separa los bloques con comas, sin coma después del último. Usa comillas dobles para las claves y los textos. El orden en el archivo es el orden en la página; usa `[]` para dejar una lista vacía.
+3. Ejecuta `npm run build` y recarga la página para revisar los cambios antes de publicar.
 
-| Sección | Campos |
-| --- | --- |
-| Presentación | `nombre`, `apellido`, `intro` |
-| `proyectos` | `titulo`, `descripcion`, `categoria`, `url` |
-| `enlaces` | `titulo`, `descripcion`, `url` |
+| Sección | Obligatorios | Opcionales |
+| --- | --- | --- |
+| Presentación | `nombre`, `apellido`, `intro` | — |
+| Cada proyecto | `titulo` | `descripcion`, `categoria`, `url`, `imagen` |
+| Cada enlace | `titulo` | `descripcion`, `url` |
 
-En `url`, usa una dirección completa como `https://ejemplo.com` o `mailto:tu@ejemplo.com`. Si la dejas en blanco, la tarjeta se muestra sin enlace. Puedes dejar una sección sin elementos con `[]`.
+En `url` usa una dirección completa con `https:`, `http:` o `mailto:`. Si aún no tienes un destino, omite `url` o escribe `""` para mostrar la ficha como texto.
+
+Para añadir una portada, guarda la imagen en `site/proyectos/` (crea la carpeta si no existe) y pon solo el nombre exacto del archivo en `imagen`. Se admiten JPG, PNG, WebP, AVIF y SVG. Si omites `imagen` o el archivo no existe, se muestra una ilustración automática. La portada puede recortarse para encajar en la tarjeta; incluye los detalles importantes en `descripcion`.
+
+Ejemplo de archivo completo; para añadir estas entradas sin borrar las tuyas, copia solo los bloques de cada lista:
+
+```json
+{
+  "nombre": "Marcos",
+  "apellido": "Freixanet",
+  "intro": "Diseño y construyo productos, de la interfaz al servidor.",
+  "proyectos": [
+    {
+      "titulo": "Bitácora de rutas para iPhone",
+      "descripcion": "Guarda rutas y notas incluso sin conexión.",
+      "categoria": "App iOS",
+      "imagen": "bitacora.webp"
+    }
+  ],
+  "enlaces": [
+    { "titulo": "Documentación de Swift", "url": "https://www.swift.org/documentation/" }
+  ]
+}
+```
+
+Si la compilación indica `enlaces[0].url`, revisa la dirección del **primer** enlace: las posiciones empiezan en cero. Si el error apunta a la sintaxis de `contenido.json`, comprueba las comas y las comillas cerca de la posición indicada.
 
 ## Probar y publicar
 
@@ -24,6 +51,6 @@ npm run build
 npm start
 ```
 
-Abre <http://localhost:4173>. Después de editar el contenido, vuelve a ejecutar `npm run build` y recarga la página.
+Abre <http://localhost:4173>. Puedes dejar `npm start` en marcha y ejecutar `npm run build` en otra terminal después de cada edición.
 
 El resultado está en `dist/`. Puedes publicarlo tal cual en un alojamiento estático. Esta versión incluye `noindex` en el HTML generado para que los buscadores no indexen los ejemplos; quítalo en [`build.mjs`](build.mjs) cuando publiques contenido real. `noindex` no restringe el acceso.
