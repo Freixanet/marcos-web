@@ -24,16 +24,16 @@
 
 :root {
   color-scheme: light;
-  --bg: #f5f2ea;
-  --surface: #fcfaf5;
-  --text: #21211e;
-  --text-muted: #625e53;
-  --border: #d5cfc2;
-  --accent: #a93d23;
-  --accent-fg: #f5a98a;
-  --primary-action: #24231f;
+  --bg: #faf3e7;
+  --surface: #fffbf3;
+  --text: #28251f;
+  --text-muted: #6a5c4b;
+  --border: #d8c9b5;
+  --accent: #aa3e20;
+  --accent-fg: #f7b68f;
+  --primary-action: #aa3e20;
   --primary-action-fg: #fffaf1;
-  --radius: 8px;
+  --radius: 12px;
   --font: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
   --display: Geist, "Helvetica Neue", Arial, sans-serif;
   --mono: "Martian Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
@@ -75,10 +75,10 @@ nav a, .footer a { display: inline-flex; align-items: center; min-height: 44px; 
 .hero-intro { max-width: 35ch; }
 .hero-role { max-width: 36ch; margin-bottom: 12px; font-size: 1.25rem; font-weight: 500; line-height: 1.4; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 0 12px; }
-.primary-action { display: inline-flex; align-items: center; justify-content: space-between; min-height: 46px; gap: 21px; margin-top: 26px; padding: 10px 15px; border-radius: 4px; background: var(--primary-action); color: var(--primary-action-fg); font-size: .875rem; font-weight: 500; text-decoration: none; }
+.primary-action { display: inline-flex; align-items: center; justify-content: space-between; min-height: 46px; gap: 21px; margin-top: 26px; padding: 10px 17px; border-radius: 6px; background: var(--primary-action); color: var(--primary-action-fg); font-size: .875rem; font-weight: 500; text-decoration: none; }
 .primary-action:focus-visible { outline-color: var(--text); }
 .secondary-action { background: transparent; color: var(--text); box-shadow: inset 0 0 0 1px var(--border); }
-.hero-art { width: 100%; max-width: 464px; justify-self: end; }
+.hero-art { width: 100%; max-width: 464px; justify-self: end; transform: rotate(-2deg); }
 .hero-art img { width: 100%; height: auto; }
 
 .work { border-top: 1px solid var(--border); padding-block: 33px clamp(56px, 8vw, 94px); }
@@ -87,14 +87,14 @@ h2 { margin-top: 7px; font-size: clamp(2.65rem, 5.2vw, 4.4rem); font-weight: 400
 .section-head > p { padding-bottom: 3px; }
 .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 16px; }
 .project-card { position: relative; display: flex; flex-direction: column; overflow: hidden; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow-wrap: anywhere; }
-.project-art { display: grid; place-items: center; position: relative; min-height: 128px; overflow: hidden; background-image: linear-gradient(to right, #211f1b15 1px, transparent 1px), linear-gradient(to bottom, #211f1b15 1px, transparent 1px); background-size: 20px 20px; }
-.project-art span { position: absolute; inset: 12px auto auto 12px; font: 400 .65rem var(--mono); }
-.project-art svg { width: min(100%, 360px); height: 128px; }
+.project-art { display: grid; place-items: center; position: relative; min-height: 152px; overflow: hidden; }
+.project-art span { position: absolute; inset: 14px auto auto 16px; font: 400 .65rem var(--mono); }
+.project-art svg { width: min(100%, 360px); height: 152px; stroke-linecap: round; stroke-linejoin: round; }
 .project-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.art-0 { background-color: #e8beab; color: #813421; }
-.art-1 { background-color: #dde1cd; color: #444c35; }
-.art-2 { background-color: #ebddbb; color: #665323; }
-.project-content { display: flex; flex: 1; flex-direction: column; align-items: flex-start; padding: 20px; }
+.art-0 { background-color: #efc3a5; color: #6d3421; }
+.art-1 { background-color: #efddb1; color: #72542b; }
+.art-2 { background-color: #eab797; color: #6d3421; }
+.project-content { display: flex; flex: 1; flex-direction: column; align-items: flex-start; padding: 22px; }
 .project-content .category { color: var(--accent); }
 .project-content h3 { margin-top: 6px; font-size: clamp(1.25rem, 2vw, 1.57rem); font-weight: 400; letter-spacing: -.035em; }
 .project-content h3 + p { margin: 8px 0 18px; color: var(--text-muted); line-height: 1.48; }
@@ -103,16 +103,16 @@ h2 { margin-top: 7px; font-size: clamp(2.65rem, 5.2vw, 4.4rem); font-weight: 400
 .project-link { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; color: var(--accent); font-weight: 500; text-underline-offset: 3px; }
 .project-link::after { content: ""; position: absolute; inset: 0; }
 
-.shelf { background: var(--text); color: var(--surface); }
+.shelf { background: #f0dec7; color: var(--text); border-block: 1px solid var(--border); }
 .shelf-inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); align-items: start; gap: clamp(28px, 6vw, 75px); padding-block: clamp(40px, 6.5vw, 85px); }
-.shelf .kicker span, .shelf h2 span, .shortcut svg { color: var(--accent-fg); }
+.shelf .kicker span, .shelf h2 span, .shortcut svg { color: var(--accent); }
 .shelf h2 { margin-bottom: 15px; }
-.shelf p:not(.kicker) { max-width: 30ch; color: #d1c9b8; }
-.shortcut-list { border-top: 1px solid #5a564e; }
-.shortcut { display: flex; min-height: 68px; align-items: center; justify-content: space-between; gap: 10px; border-bottom: 1px solid #5a564e; padding: 11px 3px; text-decoration: none; overflow-wrap: anywhere; }
+.shelf p:not(.kicker) { max-width: 30ch; color: var(--text-muted); }
+.shortcut-list { border-top: 1px solid #beaa90; }
+.shortcut { display: flex; min-height: 76px; align-items: center; justify-content: space-between; gap: 10px; border-bottom: 1px solid #beaa90; padding: 14px 3px; text-decoration: none; overflow-wrap: anywhere; }
 .shortcut-label { display: grid; gap: 3px; min-width: 0; }
 .shortcut-label strong { font-weight: 500; }
-.shortcut-label span, .shortcut-status { color: #d1c9b8; font-size: .85rem; line-height: 1.35; }
+.shortcut-label span, .shortcut-status { color: var(--text-muted); font-size: .85rem; line-height: 1.35; }
 .shortcut-status { flex: none; }
 .shortcut svg { flex: none; }
 
@@ -123,7 +123,7 @@ h2 { margin-top: 7px; font-size: clamp(2.65rem, 5.2vw, 4.4rem); font-weight: 400
 
 @media (hover: hover) {
   nav a:hover, .footer a:hover, a.shortcut:hover .shortcut-label strong { text-decoration: underline; text-underline-offset: 4px; }
-  .primary-action:hover { background: var(--accent); }
+  .primary-action:hover { background: var(--text); }
   .secondary-action:hover { background: var(--surface); }
 }
 
