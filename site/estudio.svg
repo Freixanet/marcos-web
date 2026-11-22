@@ -1,36 +1,28 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="420" height="342" viewBox="0 0 420 342" fill="none">
-  <defs>
-    <pattern id="grid" width="19" height="19" patternUnits="userSpaceOnUse">
-      <path d="M19 0H0V19" stroke="#756c5d" stroke-opacity=".4" stroke-width=".7"/>
-    </pattern>
-    <clipPath id="plot">
-      <path d="M36 42h348v236H36z"/>
-    </clipPath>
-  </defs>
-  <rect x=".5" y=".5" width="419" height="341" rx="7.5" fill="#272621" stroke="#4b4438"/>
-  <path d="M36 42h348v236H36z" fill="url(#grid)" stroke="#736a5b" stroke-width=".7"/>
-  <g clip-path="url(#plot)">
-    <circle cx="210" cy="160" r="84" fill="#d96b47"/>
-    <path d="M36 160h348M210 42v236" stroke="#e1cfac" stroke-opacity=".56" stroke-width=".85" stroke-dasharray="3 5"/>
-    <g stroke="#f4d8b3" stroke-width=".85">
-      <circle cx="210" cy="160" r="97"/>
-      <circle cx="210" cy="160" r="108" stroke-opacity=".6"/>
-      <ellipse cx="210" cy="160" rx="134" ry="50" transform="rotate(-31 210 160)"/>
-      <ellipse cx="210" cy="160" rx="134" ry="50" transform="rotate(31 210 160)"/>
-      <ellipse cx="210" cy="160" rx="41" ry="97"/>
-      <path d="M113 160h194"/>
-    </g>
-    <circle cx="210" cy="160" r="8" fill="#272621" stroke="#f4d8b3"/>
-    <circle cx="210" cy="160" r="2" fill="#f4d8b3"/>
-    <circle cx="315" cy="144" r="3" fill="#f4d8b3"/>
-    <circle cx="126" cy="111" r="3" fill="#f4d8b3"/>
-    <path d="M61 70v14m-7-7h14m291 167v14m-7-7h14" stroke="#d96b47"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="460" viewBox="0 0 500 460" fill="none">
+  <path d="M37 62h424v351H37z" fill="#151515"/>
+  <path d="M25 50h424v351H25z" fill="#7be4e9" stroke="#151515" stroke-width="4"/>
+  <path d="M25 97h424" stroke="#151515" stroke-width="4"/>
+  <g fill="#ffdf2b" stroke="#151515" stroke-width="3">
+    <circle cx="48" cy="74" r="7"/><circle cx="72" cy="74" r="7"/><circle cx="96" cy="74" r="7"/>
   </g>
-  <path d="M36 51v-9h9m330 0h9v9M36 269v9h9m330 0h9v-9M36 298h348" stroke="#f4d8b3" stroke-opacity=".72" stroke-width=".8"/>
-  <g fill="#e2cdb0" font-family="monospace" font-size="9" letter-spacing="1.7">
-    <text x="36" y="26">ARCHIVO PERSONAL</text>
-    <text x="384" y="26" text-anchor="end">FIG. 01</text>
-    <text x="36" y="321">UN LUGAR PARA TODO</text>
-    <text x="384" y="321" text-anchor="end">M / F</text>
+  <path d="M409 65h20v18h-20z" fill="#fff" stroke="#151515" stroke-width="3"/>
+  <path d="M25 337h424" stroke="#151515" stroke-width="4"/>
+  <path d="M45 360h107m-107 17h68" stroke="#151515" stroke-width="4"/>
+  <g transform="rotate(-8 242 225)">
+    <path d="M100 137h287v182H100z" fill="#151515"/>
+    <path d="M91 128h287v182H91z" fill="#fff" stroke="#151515" stroke-width="4"/>
+    <path d="M91 160h287" stroke="#151515" stroke-width="4"/>
+    <path d="M108 145h71m147 0h35" stroke="#151515" stroke-width="4"/>
+    <path d="m182 194-39 34 39 34m101-68 39 34-39 34m-34-77-30 87" stroke="#304cff" stroke-width="12" stroke-linejoin="miter"/>
   </g>
+  <path d="m409 6 12 31 29-16-3 33 33 2-22 24 25 22-32 6 7 33-31-13-8 32-17-28-26 21 1-33-33 3 21-26-28-17 32-9-14-30 32 6 4-33 24 24Z" fill="#ff92d0" stroke="#151515" stroke-width="4"/>
+  <path d="m404 64 24 21m-23 0 23-22" stroke="#151515" stroke-width="5"/>
+  <g transform="rotate(9 94 365)">
+    <path d="M17 344h164v63H17z" fill="#151515"/>
+    <path d="M10 337h164v63H10z" fill="#ffdf2b" stroke="#151515" stroke-width="4"/>
+    <path d="m33 372 11 11 23-28m18 6h64m-64 15h48" stroke="#151515" stroke-width="5"/>
+  </g>
+  <path d="m353 296 14 125 29-31 29 52 29-17-30-51 42-9Z" fill="#151515"/>
+  <path d="m343 286 14 125 29-31 29 52 29-17-30-51 42-9Z" fill="#fff" stroke="#151515" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M50 130v26m-13-13h26M295 371v20m-10-10h20" stroke="#151515" stroke-width="4"/>
 </svg>
