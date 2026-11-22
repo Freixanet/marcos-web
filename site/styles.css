@@ -28,7 +28,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 .shell { width: min(100% - clamp(36px, 8vw, 128px), 1280px); margin-inline: auto; }
 .mono { font: 600 .68rem/1.5 var(--sans); letter-spacing: .14em; text-transform: uppercase; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.skip { position: absolute; top: .5rem; left: .5rem; z-index: 2; padding: .8rem 1rem; background: var(--text); color: var(--bg); transform: translateY(-180%); font-family: var(--sans); }
+.skip { position: absolute; top: .5rem; left: .5rem; z-index: 2; max-width: calc(100% - 1rem); padding: .8rem 1rem; background: var(--text); color: var(--bg); transform: translateY(-180%); font-family: var(--sans); }
 .skip:focus { transform: none; }
 
 .masthead-inner { min-height: 76px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 12px; border-bottom: 1px solid var(--text); }
