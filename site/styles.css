@@ -64,7 +64,7 @@ h2 { margin-top: 12px; font-size: clamp(2.1rem, 3.4vw, 3rem); font-weight: 400; 
 .project-card { position: relative; display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 32px; padding-block: 25px; border-bottom: 1px solid var(--border); overflow-wrap: anywhere; }
 .project-art { position: relative; display: grid; place-items: center; min-height: 130px; overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--accent); }
 .project-art span { position: absolute; top: 11px; left: 12px; color: var(--text-muted); font: 400 .625rem var(--mono); }
-.project-art svg { width: 210px; max-width: none; height: 105px; margin-top: 10px; }
+.project-art svg { width: calc(100% - 16px); max-width: 120px; height: auto; margin-top: 14px; }
 .project-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .project-content { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-content: center; column-gap: 28px; padding: 6px 2px 6px 0; }
 .project-content .category { grid-column: 1; margin-bottom: 9px; color: var(--text-muted); }
@@ -117,10 +117,11 @@ h2 { margin-top: 12px; font-size: clamp(2.1rem, 3.4vw, 3rem); font-weight: 400; 
   .hero { grid-template-columns: 1fr; gap: 44px; padding-block: 52px; }
   .hero h1 { font-size: clamp(2.65rem, 13vw, 5.2rem); margin-block: 24px; }
   .hero-role { max-width: 34ch; }
+  .hero-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .hero-actions .primary-action { gap: 8px; padding-inline: 10px; font-size: .6875rem; }
   .hero-art { max-width: 380px; justify-self: center; }
   .project-card { grid-template-columns: 90px minmax(0, 1fr); gap: 18px; padding-block: 22px; }
   .project-art { min-height: 112px; align-self: start; }
-  .project-art svg { width: 190px; }
   .project-content { padding-top: 0; }
   .project-content h3 + p { font-size: .875rem; }
   .shelf-inner { grid-template-columns: 1fr; gap: 32px; padding-block: 42px; }
@@ -129,7 +130,7 @@ h2 { margin-top: 12px; font-size: clamp(2.1rem, 3.4vw, 3rem); font-weight: 400; 
 
 @media (max-width: 360px) {
   .masthead-inner { gap: 8px; }
-  .brand { min-width: 38px; font-size: .875rem; }
+  .brand { min-width: 44px; font-size: .875rem; }
   .brand::before { margin-right: 4px; }
   .brand::after { margin-left: 4px; }
   nav { gap: 12px; }
@@ -137,8 +138,6 @@ h2 { margin-top: 12px; font-size: clamp(2.1rem, 3.4vw, 3rem); font-weight: 400; 
   .nav-contact svg { display: none; }
   .project-card { grid-template-columns: 72px minmax(0, 1fr); gap: 14px; }
   .project-art { min-height: 96px; }
-  .project-art svg { width: 165px; height: 85px; }
   .project-content h3 { font-size: 1.125rem; }
   .shortcut { gap: 12px; }
-  .shortcut-status { font-size: .5625rem; }
 }

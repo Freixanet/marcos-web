@@ -53,7 +53,7 @@ function projectCard({ titulo, descripcion, categoria, url, imagen }, i, project
   const cover = projectImages.has(filename)
     ? `<img src="./proyectos/${escape(encodeURIComponent(filename))}" alt="" loading="lazy" decoding="async">`
     : `<span>${index(i)} /</span>
-      <svg viewBox="0 0 320 120" fill="none" stroke="currentColor" stroke-width="1.3">${projectArt[i % projectArt.length]}</svg>`;
+      <svg viewBox="80 0 160 120" fill="none" stroke="currentColor" stroke-width="1.3">${projectArt[i % projectArt.length]}</svg>`;
   return `<li class="project-card">
     <div class="project-art art-${i % projectArt.length}" aria-hidden="true">
       ${cover}
