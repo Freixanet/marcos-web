@@ -83,3 +83,33 @@ test('empty sections still have navigation targets', () => {
   assert.match(html, /Todavía no hay enlaces publicados/);
   assert.doesNotMatch(html, /<ul/);
 });
+
+test('sharing metadata uses Spanish text and an absolute configured image URL', () => {
+  const html = render({ ...profile, intro: 'Ideas & proyectos' }, { url: 'https://example.com/portfolio?draft=1#top' });
+  assert.match(html, /property="og:title" content="Marcos Freixanet — Portfolio personal"/);
+  assert.match(html, /property="og:description" content="Ideas &amp; proyectos"/);
+  assert.match(html, /property="og:image" content="https:\/\/example.com\/portfolio\/og-image.jpg"/);
+  assert.match(html, /property="og:url" content="https:\/\/example.com\/portfolio\/"/);
+  assert.match(html, /property="og:type" content="website"/);
+  assert.match(html, /property="og:locale" content="es_ES"/);
+  assert.match(html, /name="twitter:card" content="summary_large_image"/);
+});
+
+test('sharing metadata remains available with empty content and sections', () => {
+  const html = render({ ...profile, intro: '' });
+  assert.match(html, /property="og:description" content=""/);
+  assert.match(html, /property="og:image" content="https?:\/\//);
+});
+
+test('invalid sharing URLs fail the build', () => {
+  for (const url of ['', '/relative', 'javascript:alert(1)', 'https://user:password@example.com']) {
+    assert.throws(() => render(profile, { url }));
+  }
+});
+
+test('build can inline the small stylesheet without a blocking CSS request', () => {
+  const html = render(profile, { styles: 'body { margin: 0; }' });
+  assert.match(html, /<style>body \{ margin: 0; \}<\/style>/);
+  assert.doesNotMatch(html, /rel="stylesheet"/);
+  assert.match(render(profile, { styles: '' }), /rel="stylesheet"/);
+});
