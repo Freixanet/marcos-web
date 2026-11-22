@@ -53,7 +53,7 @@ function projectCard({ titulo, descripcion, categoria, url, imagen }, i, project
   const cover = projectImages.has(filename)
     ? `<img src="./proyectos/${escape(encodeURIComponent(filename))}" alt="" loading="lazy" decoding="async">`
     : `<span>${index(i)} /</span>
-      <svg viewBox="0 0 320 120" fill="none" stroke="currentColor" stroke-width="1.3">${projectArt[i % projectArt.length]}</svg>`;
+      <svg viewBox="80 0 160 120" fill="none" stroke="currentColor" stroke-width="1.3">${projectArt[i % projectArt.length]}</svg>`;
   return `<li class="project-card">
     <div class="project-art art-${i % projectArt.length}" aria-hidden="true">
       ${cover}
@@ -98,7 +98,7 @@ export function render({ nombre, apellido, intro, rol, contacto, proyectos = [],
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="${escape(rol || intro)}">
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#f5f2ea">
+  <meta name="theme-color" content="#101311">
   <title>${fullName} — Portfolio personal</title>
   <meta property="og:title" content="${fullName} — Portfolio personal">
   <meta property="og:description" content="${escape(intro)}">
@@ -117,8 +117,6 @@ export function render({ nombre, apellido, intro, rol, contacto, proyectos = [],
   <link rel="icon" href="./icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="./icon-192.png">
   <link rel="manifest" href="./site.webmanifest" crossorigin="use-credentials">
-  <link rel="preload" href="./fonts/geist-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="./fonts/ibm-plex-sans-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
   ${styles ? `<style>${styles}</style>` : '<link rel="stylesheet" href="./styles.css">'}
 </head>
 <body id="inicio">
