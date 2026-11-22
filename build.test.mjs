@@ -10,14 +10,14 @@ const profile = { nombre: 'Marcos', apellido: 'Freixanet', intro: 'Mi portfolio'
 const project = { titulo: 'Mi proyecto', descripcion: 'Un ejemplo', categoria: 'Test' };
 const shortcut = { titulo: 'Contacto', descripcion: 'Escríbeme' };
 
-test('contact links appear in the header, hero and footer', () => {
+test('contact links appear in the header and hero without a footer', () => {
   const html = render({ ...profile, contacto: ' mailto:marcos@example.com ' });
   const contactLink = /href="mailto:marcos@example\.com"/g;
-  assert.equal((html.match(contactLink) ?? []).length, 3);
+  assert.equal((html.match(contactLink) ?? []).length, 2);
   assert.match(html, /<nav[\s\S]*?href="mailto:marcos@example\.com">Escríbeme/);
   assert.match(html, /class="primary-action" href="mailto:marcos@example\.com">Escríbeme/);
   assert.match(html, /class="primary-action secondary-action" href="#proyectos"/);
-  assert.match(html, /<footer[\s\S]*?Escríbeme: marcos@example\.com/);
+  assert.doesNotMatch(html, /<footer|Volver arriba/);
 });
 
 test('missing or empty contact preserves the original actions', () => {
@@ -119,8 +119,7 @@ test('the build copies existing covers and illustrates cards with no cover', asy
   const html = await readFile(join(root, 'dist', 'index.html'), 'utf8');
   assert.match(html, /<img src="\.\/proyectos\/Portada%20m%C3%B3vil\.svg" alt="" loading="lazy"/);
   assert.doesNotMatch(html, /no-existe.webp/);
-  assert.match(html, /<span>02 \/<\/span>/);
-  assert.match(html, /<span>03 \/<\/span>/);
+  assert.equal((html.match(/<svg viewBox="0 0 320 120"/g) ?? []).length, 2);
   assert.equal(await readFile(join(root, 'dist', 'proyectos', filename), 'utf8'), cover);
 });
 
