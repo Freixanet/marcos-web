@@ -14,7 +14,7 @@ Portfolio personal en español, con una sección de proyectos y otra para guarda
 | Cada proyecto | `titulo` | `descripcion`, `categoria`, `url`, `imagen` |
 | Cada enlace | `titulo` | `descripcion`, `url` |
 
-`rol` aparece destacado en la portada y en la descripción para buscadores. Para mostrar «Escríbeme» en la cabecera, la portada y el pie, usa una dirección `mailto:` en `contacto`.
+`rol` aparece destacado en la portada y en la descripción para buscadores. Para mostrar «Escríbeme» en la cabecera y la portada, usa una dirección `mailto:` en `contacto`.
 
 En `url` usa una dirección completa con `https:`, `http:` o `mailto:`. Si aún no tienes un destino, omite `url` o escribe `""` para mostrar la ficha como texto.
 
@@ -66,3 +66,5 @@ La tarjeta está en [`site/og-image.jpg`](site/og-image.jpg) (1200 × 630). El b
 ## Tipografía
 
 La combinación está inspirada en desmodus.co: Geist para titulares, IBM Plex Sans para texto y Martian Mono para etiquetas. Las fuentes variables WOFF2 se sirven desde `site/fonts/`, sin peticiones a Google ni a Desmodus. Los subconjuntos latinos incluyen los acentos del español. Sus fuentes y licencias SIL Open Font License están documentadas en [`site/fonts/README.md`](site/fonts/README.md).
+
+Como referencias de diseño se usan la jerarquía tipográfica de [Geist](https://vercel.com/geist/typography) y [Carbon](https://carbondesignsystem.com/guidelines/typography/overview/), las recomendaciones de [Material para texto legible](https://m3.material.io/styles/typography/applying-type) y la [simplicidad visual de NN/g](https://www.nngroup.com/articles/aesthetic-minimalist-design/). Las etiquetas parten de 12 px, los textos de lectura usan un interlineado de al menos 1,5 y los controles mantienen áreas de al menos 44 px de alto, foco visible y navegación por teclado, siguiendo las guías de [WCAG](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html). Son criterios aplicados al portfolio, no una certificación de accesibilidad.

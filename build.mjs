@@ -4,7 +4,6 @@ import { siteUrl } from './site.config.mjs';
 
 const entities = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
 const escape = (value = '') => value.replace(/[&<>"']/g, char => entities[char]);
-const index = (i) => String(i + 1).padStart(2, '0');
 
 const coverExtensions = /\.(avif|jpe?g|png|svg|webp)$/i;
 
@@ -28,15 +27,6 @@ function destination(url = '', field) {
   return escape(parsed.href);
 }
 
-const arrow = (direction = 'diagonal') => {
-  const path = {
-    diagonal: 'M4 12 12 4M5 4h7v7',
-    down: 'M8 3v10m-4-4 4 4 4-4',
-    up: 'M8 13V3m-4 4 4-4 4 4',
-  }[direction];
-  return `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="${path}" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-};
-
 const projectArt = [
   '<rect x="114" y="14" width="92" height="92" rx="15" transform="rotate(45 160 60)"/><rect x="129" y="29" width="62" height="62" rx="9" transform="rotate(45 160 60)"/><rect x="144" y="44" width="32" height="32" rx="4" transform="rotate(45 160 60)"/><circle cx="160" cy="60" r="3" fill="currentColor"/>',
   '<ellipse cx="160" cy="60" rx="65" ry="32" transform="rotate(-26 160 60)"/><ellipse cx="160" cy="60" rx="65" ry="32" transform="rotate(26 160 60)"/><ellipse cx="160" cy="60" rx="28" ry="51"/><circle cx="160" cy="60" r="5" fill="currentColor"/>',
@@ -52,8 +42,7 @@ function projectCard({ titulo, descripcion, categoria, url, imagen }, i, project
   const filename = typeof imagen === 'string' ? imagen.trim() : '';
   const cover = projectImages.has(filename)
     ? `<img src="./proyectos/${escape(encodeURIComponent(filename))}" alt="" loading="lazy" decoding="async">`
-    : `<span>${index(i)} /</span>
-      <svg viewBox="0 0 320 120" fill="none" stroke="currentColor" stroke-width="1.3">${projectArt[i % projectArt.length]}</svg>`;
+    : `<svg viewBox="0 0 320 120" fill="none" stroke="currentColor" stroke-width="1.3">${projectArt[i % projectArt.length]}</svg>`;
   return `<li class="project-card">
     <div class="project-art art-${i % projectArt.length}" aria-hidden="true">
       ${cover}
@@ -62,7 +51,7 @@ function projectCard({ titulo, descripcion, categoria, url, imagen }, i, project
       ${category ? `<p class="mono category">${category}</p>` : ''}
       <h3>${title}</h3>
       ${description ? `<p>${description}</p>` : ''}
-      ${href ? `<a class="project-link" href="${href}">Ver proyecto<span class="sr-only">: ${title}</span> ${arrow()}</a>` : '<span class="project-status">Sin enlace aún</span>'}
+      ${href ? `<a class="project-link" href="${href}">Ver proyecto<span class="sr-only">: ${title}</span></a>` : '<span class="project-status">Sin enlace aún</span>'}
     </div>
   </li>`;
 }
@@ -74,7 +63,7 @@ function shortcut({ titulo, descripcion, url }, i) {
   const href = destination(url, `${field}.url`);
   const label = `<span class="shortcut-label"><strong>${title}</strong>${description ? `<span>${description}</span>` : ''}</span>`;
   return `<li>${href
-    ? `<a class="shortcut" href="${href}">${label}${arrow()}</a>`
+    ? `<a class="shortcut" href="${href}">${label}</a>`
     : `<div class="shortcut">${label}<span class="shortcut-status">Sin enlace aún</span></div>`
   }</li>`;
 }
@@ -129,7 +118,7 @@ export function render({ nombre, apellido, intro, rol, contacto, proyectos = [],
       <nav aria-label="Principal">
         <a href="#proyectos">Proyectos</a>
         <a href="#enlaces">Enlaces</a>${contactHref ? `
-        <a class="nav-contact" href="${contactHref}">Escríbeme ${arrow()}</a>` : ''}
+        <a class="nav-contact" href="${contactHref}">Escríbeme</a>` : ''}
       </nav>
     </div>
   </header>
@@ -139,8 +128,8 @@ export function render({ nombre, apellido, intro, rol, contacto, proyectos = [],
         <p class="mono kicker"><span class="signal" aria-hidden="true"></span> Portfolio personal</p>
         <h1 id="nombre">${escape(nombre)}<br>${escape(apellido)}<span>.</span></h1>
         ${rol ? `<p class="hero-role">${escape(rol)}</p>\n        ` : ''}<p class="hero-intro">${escape(intro)}</p>
-        ${contactHref ? `<div class="hero-actions"><a class="primary-action" href="${contactHref}">Escríbeme ${arrow()}</a>
-        <a class="primary-action secondary-action" href="#proyectos">Ver proyectos ${arrow('down')}</a></div>` : `<a class="primary-action" href="#proyectos">Ver proyectos ${arrow('down')}</a>`}
+        ${contactHref ? `<div class="hero-actions"><a class="primary-action" href="${contactHref}">Escríbeme</a>
+        <a class="primary-action secondary-action" href="#proyectos">Ver proyectos</a></div>` : `<a class="primary-action" href="#proyectos">Ver proyectos</a>`}
       </div>
       <figure class="hero-art" aria-hidden="true">
         <img src="./estudio.svg" width="420" height="342" alt="">
@@ -167,10 +156,6 @@ export function render({ nombre, apellido, intro, rol, contacto, proyectos = [],
       </div>
     </section>
   </main>
-  <footer class="shell footer">
-    <p class="mono">${fullName} <span aria-hidden="true">/</span> Portfolio personal</p>
-    ${contactHref ? `<a href="${contactHref}">Escríbeme: ${escape(contacto.trim().replace(/^mailto:/i, '').split('?')[0])}</a>\n    ` : ''}<a href="#inicio">Volver arriba ${arrow('up')}</a>
-  </footer>
 </body>
 </html>
 `;
