@@ -36,7 +36,7 @@ test('invalid contact destinations fail the build', () => {
 
 test('role is escaped and used in the hero and meta description when present', () => {
   const html = render({ ...profile, rol: 'Swift & Python <apps>' });
-  assert.match(html, /<p class="hero-role">Swift &amp; Python &lt;apps&gt;<\/p>/);
+  assert.match(html, /<p class="hero-role"><mark>Swift<\/mark> &amp; <mark>Python<\/mark> &lt;apps&gt;<\/p>/);
   assert.match(html, /<meta name="description" content="Swift &amp; Python &lt;apps&gt;">/);
   for (const rol of [undefined, '']) {
     const fallback = render({ ...profile, rol });

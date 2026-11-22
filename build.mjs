@@ -5,6 +5,7 @@ import { siteUrl } from './site.config.mjs';
 const entities = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
 const escape = (value = '') => value.replace(/[&<>"']/g, char => entities[char]);
 const index = (i) => String(i + 1).padStart(2, '0');
+const highlightTools = value => escape(value).replace(/\b(Swift|TypeScript|Python)\b/g, '<mark>$1</mark>');
 
 const coverExtensions = /\.(avif|jpe?g|png|svg|webp)$/i;
 
@@ -135,13 +136,14 @@ export function render({ nombre, apellido, intro, rol, contacto, proyectos = [],
     <section class="shell hero" aria-labelledby="nombre">
       <div class="hero-copy">
         <p class="mono kicker"><span class="signal" aria-hidden="true"></span> Portfolio personal</p>
-        <h1 id="nombre">${escape(nombre)}<br>${escape(apellido)}<span>.</span></h1>
-        ${rol ? `<p class="hero-role">${escape(rol)}</p>\n        ` : ''}<p class="hero-intro">${escape(intro)}</p>
+        <h1 id="nombre">${escape(nombre)}<br><em>${escape(apellido)}</em><span>.</span></h1>
+        ${rol ? `<p class="hero-role">${highlightTools(rol)}</p>\n        ` : ''}<p class="hero-intro">${escape(intro)}</p>
         ${contactHref ? `<div class="hero-actions"><a class="primary-action" href="${contactHref}">Escríbeme ${arrow()}</a>
         <a class="primary-action secondary-action" href="#proyectos">Ver proyectos ${arrow('down')}</a></div>` : `<a class="primary-action" href="#proyectos">Ver proyectos ${arrow('down')}</a>`}
       </div>
       <figure class="hero-art" aria-hidden="true">
         <img src="./estudio.svg" width="420" height="342" alt="">
+        <figcaption class="mono"><span>Fig. 01</span> Ideas en órbita</figcaption>
       </figure>
     </section>
     <section class="shell work" id="proyectos" aria-labelledby="proyectos-titulo">

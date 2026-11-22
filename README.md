@@ -2,6 +2,10 @@
 
 Portfolio personal en español, con una sección de proyectos y otra para guardar enlaces útiles. Es un sitio estático: no necesita base de datos ni dependencias de npm.
 
+### Variante: cuaderno editorial
+
+Combina la retícula con la paleta original de papel, terracota y oliva, la ilustración científica y la tipografía Georgia de la variante magazine. Los acentos rojos y la capitular se reservan para detalles; el subtítulo oscuro destaca Swift, TypeScript y Python. Los proyectos se presentan en una fila de tres columnas en escritorio y se apilan en móvil. Se mantienen el contenido editable, las portadas opcionales y la navegación sin JavaScript ni fuentes externas.
+
 ## Añadir proyectos y enlaces
 
 1. Abre [`contenido.json`](contenido.json). Para añadir un proyecto o un enlace, copia uno de los bloques `{ ... }` dentro de `proyectos` o `enlaces` y cambia sus valores.
