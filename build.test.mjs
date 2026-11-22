@@ -6,6 +6,41 @@ const profile = { nombre: 'Marcos', apellido: 'Freixanet', intro: 'Mi portfolio'
 const project = { titulo: 'Mi proyecto', descripcion: 'Un ejemplo', categoria: 'Test' };
 const shortcut = { titulo: 'Contacto', descripcion: 'Escríbeme' };
 
+test('contact links appear in the header, hero and footer', () => {
+  const html = render({ ...profile, contacto: ' mailto:marcos@example.com ' });
+  const contactLink = /href="mailto:marcos@example\.com"/g;
+  assert.equal((html.match(contactLink) ?? []).length, 3);
+  assert.match(html, /<nav[\s\S]*?href="mailto:marcos@example\.com">Escríbeme/);
+  assert.match(html, /class="primary-action" href="mailto:marcos@example\.com">Escríbeme/);
+  assert.match(html, /class="primary-action secondary-action" href="#proyectos"/);
+  assert.match(html, /<footer[\s\S]*?Escríbeme: marcos@example\.com/);
+});
+
+test('missing or empty contact preserves the original actions', () => {
+  for (const contacto of [undefined, '', '  ']) {
+    const html = render({ ...profile, contacto });
+    assert.doesNotMatch(html, /Escríbeme|mailto:|secondary-action|hero-actions|nav-contact/);
+    assert.match(html, /class="primary-action" href="#proyectos">Ver proyectos/);
+  }
+});
+
+test('invalid contact destinations fail the build', () => {
+  for (const contacto of ['javascript:alert(1)', 'not a URL']) {
+    assert.throws(() => render({ ...profile, contacto }));
+  }
+});
+
+test('role is escaped and used in the hero and meta description when present', () => {
+  const html = render({ ...profile, rol: 'Swift & Python <apps>' });
+  assert.match(html, /<p class="hero-role">Swift &amp; Python &lt;apps&gt;<\/p>/);
+  assert.match(html, /<meta name="description" content="Swift &amp; Python &lt;apps&gt;">/);
+  for (const rol of [undefined, '']) {
+    const fallback = render({ ...profile, rol });
+    assert.doesNotMatch(fallback, /hero-role/);
+    assert.match(fallback, /<meta name="description" content="Mi portfolio">/);
+  }
+});
+
 test('items with missing URLs never publish broken placeholder links', () => {
   const html = render({
     ...profile,
