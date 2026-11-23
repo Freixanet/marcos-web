@@ -19,6 +19,7 @@ uniform float uAspect;
 uniform vec3 uPointer;       // x, y (fracciones del hero), fuerza
 uniform float uPinchK;       // -1 / (narrow ? 0.05 : 0.018)
 uniform float uOpenScale;    // narrow ? 0.55 : 1.0
+uniform float uReveal;       // entrada: 0 → 1 en 1200 ms
 out float vAlpha;
 out float vAccent;
 
@@ -69,7 +70,7 @@ void main() {
   float r = length((vec2(u, y) - uCopyCenter) * uCopyInvRadius);
   a *= mix(0.05, 1.0, smoothstep(0.75, 1.7, r));
 
-  vAlpha = a;
+  vAlpha = a * uReveal;
   vAccent = acc;
   gl_Position = vec4(u * 2.0 - 1.0, 1.0 - 2.0 * y, 0.0, 1.0);
 }`;
@@ -110,6 +111,8 @@ export function mountLaminar(canvas) {
   let M = 0, count = 0, builtFor = null;
   let width = 0, height = 0, heroLeft = 0, heroTop = 0;
   let raf = 0, resizeRaf = 0, lastFrame = 0;
+  let clock = 20, scrolling = false, scrollTimer = 0;
+  const touch = matchMedia('(pointer: coarse)');
   let visible = true, menuOpen = false, lost = false;
   const focus = [0.7, 0.38], rect = [0, 0, 0, 0];
   const pointer = { x: 0.5, y: 0.5, tx: 0.5, ty: 0.5, on: 0, ton: 0 };
@@ -135,7 +138,7 @@ export function mountLaminar(canvas) {
     if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
     gl.useProgram(prog);
     uni = Object.fromEntries(
-      ['uTime', 'uFocus', 'uCopyCenter', 'uCopyInvRadius', 'uAspect', 'uPointer', 'uPinchK', 'uOpenScale']
+      ['uTime', 'uFocus', 'uCopyCenter', 'uCopyInvRadius', 'uAspect', 'uPointer', 'uPinchK', 'uOpenScale', 'uReveal']
         .map(n => [n, gl.getUniformLocation(prog, n)])
     );
     vao = gl.createVertexArray();
@@ -233,10 +236,15 @@ export function mountLaminar(canvas) {
       pointer.on += (pointer.ton - pointer.on) * kOn;
       if (pointer.ton === 0 && pointer.on < 0.0005) pointer.on = 0;
     }
-    const t = (now - start) / 1000 + 20;
+    // Reloj propio: avanza solo mientras se dibuja, así al reanudar tras una pausa no hay saltos.
+    clock += dt;
+    const t = clock;
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.uniform2f(uni.uTime, t, 0.25 * Math.sin(t * 0.06));
     gl.uniform3f(uni.uPointer, pointer.x, pointer.y, pointer.on);
+    // Entrada suave: 1200 ms con salida cuártica, 1 − (1 − x)^4. Con «reducir movimiento», visible desde el inicio.
+    const x = reduced.matches ? 1 : Math.min(1, Math.max(0, (now - start) / 1200));
+    gl.uniform1f(uni.uReveal, 1 - Math.pow(1 - x, 4));
     gl.drawArraysInstanced(gl.LINE_STRIP, 0, M, count);
   }
 
@@ -250,7 +258,7 @@ export function mountLaminar(canvas) {
   function schedule() {
     if (raf || lost) return;
     if (reduced.matches) { lastFrame = 0; frame(start + 12000); return; }
-    if (visible && !menuOpen && !document.hidden) raf = requestAnimationFrame(tick);
+    if (visible && !menuOpen && !scrolling && !document.hidden) raf = requestAnimationFrame(tick);
   }
 
   function stop() {
@@ -299,11 +307,19 @@ export function mountLaminar(canvas) {
     pointer.ton = 1;
   }, passive);
   hero.addEventListener('pointerleave', () => { pointer.ton = 0; }, passive);
+  // En pantallas táctiles se pausa mientras dura el desplazamiento, para que el scroll vaya fluido en el móvil.
+  window.addEventListener('scroll', () => {
+    if (!touch.matches) return;
+    if (!scrolling) { scrolling = true; stop(); }
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => { scrolling = false; schedule(); }, 140);
+  }, passive);
   hero.addEventListener('pointerup', e => { if (e.pointerType !== 'mouse') pointer.ton = 0; }, passive);
 
   function destroy() {
     stop();
     cancelAnimationFrame(resizeRaf);
+    clearTimeout(scrollTimer);
     listeners.abort();
     resizer.disconnect();
     seen.disconnect();

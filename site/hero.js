@@ -55,3 +55,31 @@ document.querySelector('.masthead').addEventListener('focusout', event => {
 });
 window.addEventListener('pageshow', closeMenu);
 matchMedia('(max-width: 760px)').addEventListener('change', closeMenu);
+
+// Enlaces internos (#inicio, #proyectos, #enlaces) sin escribir el #ancla en la dirección:
+// así, al recargar, el navegador vuelve a donde estabas en vez de saltar siempre a esa sección.
+// Un enlace con #ancla que llegue desde fuera sigue funcionando como siempre.
+document.addEventListener('click', event => {
+  const link = event.target.closest('a[href^="#"]');
+  if (!link || link.classList.contains('skip') || event.defaultPrevented) return;
+  if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  const id = link.getAttribute('href').slice(1);
+  const target = document.getElementById(id);
+  if (!target) return;
+  event.preventDefault();
+  closeMenu();
+  if (location.hash) history.replaceState(history.state, '', location.pathname + location.search);
+  requestAnimationFrame(() => {
+    // Sin «behavior»: respeta el scroll suave del CSS y, con «reducir movimiento», salta sin animar.
+    if (target === document.body) window.scrollTo({ top: 0 });
+    else target.scrollIntoView({ block: 'start' });
+    // Como hace un enlace normal: el foco pasa a la sección, para que el tabulador siga desde ahí.
+    if (target !== document.body) {
+      if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+      target.focus({ preventScroll: true });
+    }
+  });
+});
+
+// Safari en iOS solo aplica :active si la página escucha toques; así funciona la respuesta al pulsar botones y tarjetas.
+document.addEventListener('touchstart', () => {}, { passive: true });

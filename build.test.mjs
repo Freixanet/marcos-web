@@ -57,7 +57,7 @@ test('items with missing URLs never publish broken placeholder links', () => {
     assert.ok(html.includes(`id="${target}"`), `Missing destination: #${target}`);
   }
   assert.doesNotMatch(html.slice(html.indexOf('<body')), /href=""|href="#"|href="https?:/);
-  assert.equal((html.match(/Todavía en el horno/g) ?? []).length, 2);
+  assert.doesNotMatch(html, /project-status|shortcut-status/);
 });
 
 test('configured links work, and editable content is escaped', () => {
@@ -183,7 +183,6 @@ test('each language gets its own page, interface text and switcher', () => {
   assert.match(ca, /<html lang="ca">/);
   assert.match(ca, /class="hero-intro">Hola, sóc</);
   assert.match(ca, /<h3>Mapa<\/h3>/, 'missing translations fall back to Spanish');
-  assert.match(ca, /Encara al forn/);
   assert.match(ca, /href="\.\.\/icon\.svg"/);
   assert.match(ca, /property="og:url" content="https:\/\/example.com\/ca\/"/);
   assert.match(en, /<h3>Map<\/h3>/);

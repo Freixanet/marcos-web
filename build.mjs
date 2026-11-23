@@ -44,7 +44,7 @@ const ui = {
     projects: 'Proyectos', links: 'Enlaces', contact: 'Escríbeme', hero: 'Presentación', seeProjects: 'Ver proyectos',
     workKicker: 'Hecho y publicado', workIntro: 'Productos reales, publicados y en uso.', noProjects: 'Todavía no hay proyectos publicados.',
     shelfKicker: 'Tira del hilo', shelfTitle: 'En abierto', shelfIntro: 'Código público, herramientas y las notas detrás de cada producto.', noLinks: 'Todavía no hay enlaces publicados.',
-    noLink: 'Todavía en el horno', portfolio: 'Portfolio personal',
+    portfolio: 'Portfolio personal',
     imageAlt: name => `Portfolio personal de ${name}: productos publicados, código y enlaces.`,
   },
   ca: {
@@ -52,7 +52,7 @@ const ui = {
     projects: 'Projectes', links: 'Enllaços', contact: 'Escriu-me', hero: 'Presentació', seeProjects: 'Veure projectes',
     workKicker: 'Fet i publicat', workIntro: 'Productes reals, publicats i en ús.', noProjects: 'Encara no hi ha projectes publicats.',
     shelfKicker: 'Estira el fil', shelfTitle: 'En obert', shelfIntro: 'Codi públic, eines reals i les notes darrere cada producte en marxa.', noLinks: 'Encara no hi ha enllaços publicats.',
-    noLink: 'Encara al forn', portfolio: 'Portfoli personal',
+    portfolio: 'Portfoli personal',
     imageAlt: name => `Portfoli personal de ${name}: productes publicats, codi i enllaços.`,
   },
   en: {
@@ -60,7 +60,7 @@ const ui = {
     projects: 'Projects', links: 'Links', contact: 'Get in touch', hero: 'Introduction', seeProjects: 'See projects',
     workKicker: 'Built & shipped', workIntro: 'Real products, shipped and in use.', noProjects: 'No projects published yet.',
     shelfKicker: 'Keep digging', shelfTitle: 'In the open', shelfIntro: 'Public code, working tools and the notes behind each live product.', noLinks: 'No links published yet.',
-    noLink: 'Still in the oven', portfolio: 'Personal portfolio',
+    portfolio: 'Personal portfolio',
     imageAlt: name => `Personal portfolio of ${name}: live products, code and direct links.`,
   },
 };
@@ -98,7 +98,6 @@ function projectCard({ titulo, descripcion, categoria, url, imagen, logo }, i, p
     <div class="project-content">
       <h3${href ? ` id="project-title-${i}"` : ''}>${title}${category ? ` <span class="project-category">( ${category} )</span>` : ''}</h3>
       ${description ? `<p>${description}</p>` : ''}
-      ${href ? '' : `<span class="project-status">${t.noLink}</span>`}
     </div>
     ${href ? '</a>' : '</div>'}
   </li>`;
@@ -112,7 +111,7 @@ function shortcut({ titulo, descripcion, url }, i, t) {
   const label = `<span class="shortcut-label"><strong>${title}</strong>${description ? `<span>${description}</span>` : ''}</span>`;
   return `<li>${href
     ? `<a class="shortcut" href="${href}">${label}</a>`
-    : `<div class="shortcut">${label}<span class="shortcut-status">${t.noLink}</span></div>`
+    : `<div class="shortcut">${label}</div>`
   }</li>`;
 }
 
