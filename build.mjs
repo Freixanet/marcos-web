@@ -1,4 +1,5 @@
 import { cp, mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
+import { realpathSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 import { siteUrl } from './site.config.mjs';
 
@@ -33,30 +34,77 @@ const projectArt = [
   '<path d="M104 96V72h28V48h28V24h56M104 107V83h28V59h28V35h56M104 85V61h28V37h28V13h56"/><circle cx="207" cy="82" r="13"/><path d="M207 64v36m-18-18h36"/>',
 ];
 
-function projectCard({ titulo, descripcion, categoria, url, imagen }, i, projectImages) {
+export const languages = ['en', 'es', 'ca'];
+// Idioma de la raíz del sitio (dist/index.html); los demás van en su carpeta (dist/es/, dist/ca/).
+export const defaultLang = 'en';
+
+const ui = {
+  es: {
+    name: 'Español', locale: 'es_ES', skip: 'Saltar al contenido', mainNav: 'Principal', langNav: 'Idioma',
+    projects: 'Proyectos', links: 'Enlaces', contact: 'Escríbeme', hero: 'Presentación', seeProjects: 'Ver proyectos',
+    workKicker: 'Lo que hago', workIntro: 'Un espacio para trabajos, ideas y experimentos.', noProjects: 'Todavía no hay proyectos publicados.',
+    shelfKicker: 'Accesos directos', shelfTitle: 'A mano', shelfIntro: 'Los enlaces y recursos que quiero encontrar sin dar vueltas.', noLinks: 'Todavía no hay enlaces publicados.',
+    noLink: 'Sin enlace aún', portfolio: 'Portfolio personal',
+    imageAlt: name => `Portfolio personal de ${name}: proyectos, ideas y enlaces.`,
+  },
+  ca: {
+    name: 'Català', locale: 'ca_ES', skip: 'Salta al contingut', mainNav: 'Principal', langNav: 'Idioma',
+    projects: 'Projectes', links: 'Enllaços', contact: 'Escriu-me', hero: 'Presentació', seeProjects: 'Veure projectes',
+    workKicker: 'El que faig', workIntro: 'Un espai per a treballs, idees i experiments.', noProjects: 'Encara no hi ha projectes publicats.',
+    shelfKicker: 'Accessos directes', shelfTitle: 'A mà', shelfIntro: 'Els enllaços i recursos que vull trobar sense fer voltes.', noLinks: 'Encara no hi ha enllaços publicats.',
+    noLink: 'Encara sense enllaç', portfolio: 'Portfoli personal',
+    imageAlt: name => `Portfoli personal de ${name}: projectes, idees i enllaços.`,
+  },
+  en: {
+    name: 'English', locale: 'en_GB', skip: 'Skip to content', mainNav: 'Main', langNav: 'Language',
+    projects: 'Projects', links: 'Links', contact: 'Get in touch', hero: 'Introduction', seeProjects: 'See projects',
+    workKicker: 'What I do', workIntro: 'A space for work, ideas and experiments.', noProjects: 'No projects published yet.',
+    shelfKicker: 'Shortcuts', shelfTitle: 'Close at hand', shelfIntro: 'The links and resources I want to find without searching.', noLinks: 'No links published yet.',
+    noLink: 'No link yet', portfolio: 'Personal portfolio',
+    imageAlt: name => `Personal portfolio of ${name}: projects, ideas and links.`,
+  },
+};
+
+const isTranslation = value => value && typeof value === 'object' && !Array.isArray(value)
+  && Object.keys(value).length > 0 && Object.keys(value).every(key => languages.includes(key));
+
+// Any text in contenido.json can be a plain string or { "es": "...", "ca": "...", "en": "..." }.
+// Missing languages fall back to Spanish.
+export function localize(value, lang) {
+  if (Array.isArray(value)) return value.map(item => localize(item, lang));
+  if (isTranslation(value)) return value[lang] ?? value.es ?? Object.values(value)[0];
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, localize(item, lang)]));
+  }
+  return value;
+}
+
+function projectCard({ titulo, descripcion, categoria, url, imagen, logo }, i, projectImages, t, base) {
   const field = `proyectos[${i}]`;
   const title = entryText(titulo, `${field}.titulo`, true);
   const description = entryText(descripcion, `${field}.descripcion`);
   const category = entryText(categoria, `${field}.categoria`);
   const href = destination(url, `${field}.url`);
-  const filename = typeof imagen === 'string' ? imagen.trim() : '';
+  const hasLogo = typeof logo === 'string' && projectImages.has(logo.trim());
+  const filename = hasLogo ? logo.trim() : typeof imagen === 'string' ? imagen.trim() : '';
   const cover = projectImages.has(filename)
-    ? `<img src="./proyectos/${escape(encodeURIComponent(filename))}" alt="" loading="lazy" decoding="async">`
+    ? `<img src="${base}proyectos/${escape(encodeURIComponent(filename))}" alt="" loading="lazy" decoding="async">`
     : `<svg viewBox="0 0 320 120" fill="none" stroke="currentColor" stroke-width="1.3">${projectArt[i % projectArt.length]}</svg>`;
-  return `<li class="project-card">
-    <div class="project-art art-${i % projectArt.length}" aria-hidden="true">
+  return `<li>
+    ${href ? `<a class="project-card" href="${href}" aria-labelledby="project-title-${i}">` : '<div class="project-card">'}
+    <div class="project-art art-${i % projectArt.length}${hasLogo ? ' project-logo' : ''}" aria-hidden="true">
       ${cover}
     </div>
     <div class="project-content">
-      ${category ? `<p class="mono category">${category}</p>` : ''}
-      <h3>${title}</h3>
+      <h3${href ? ` id="project-title-${i}"` : ''}>${title}${category ? ` <span class="project-category">( ${category} )</span>` : ''}</h3>
       ${description ? `<p>${description}</p>` : ''}
-      ${href ? `<a class="project-link" href="${href}">Ver proyecto<span class="sr-only">: ${title}</span></a>` : '<span class="project-status">Sin enlace aún</span>'}
+      ${href ? '' : `<span class="project-status">${t.noLink}</span>`}
     </div>
+    ${href ? '</a>' : '</div>'}
   </li>`;
 }
 
-function shortcut({ titulo, descripcion, url }, i) {
+function shortcut({ titulo, descripcion, url }, i, t) {
   const field = `enlaces[${i}]`;
   const title = entryText(titulo, `${field}.titulo`, true);
   const description = entryText(descripcion, `${field}.descripcion`);
@@ -64,107 +112,132 @@ function shortcut({ titulo, descripcion, url }, i) {
   const label = `<span class="shortcut-label"><strong>${title}</strong>${description ? `<span>${description}</span>` : ''}</span>`;
   return `<li>${href
     ? `<a class="shortcut" href="${href}">${label}</a>`
-    : `<div class="shortcut">${label}<span class="shortcut-status">Sin enlace aún</span></div>`
+    : `<div class="shortcut">${label}<span class="shortcut-status">${t.noLink}</span></div>`
   }</li>`;
 }
 
-export function render({ nombre, apellido, intro, rol, contacto, proyectos = [], enlaces = [] }, { url = siteUrl, styles, projectImages = new Set() } = {}) {
+const langPath = lang => (lang === defaultLang ? '' : `${lang}/`);
+
+export function render(data, { url = siteUrl, styles, projectImages = new Set(), lang = 'es' } = {}) {
+  if (!languages.includes(lang)) throw new Error(`Idioma desconocido: ${lang}`);
+  const { nombre, apellido, intro, rol, contacto, proyectos = [], enlaces = [] } = localize(data, lang);
+  const t = ui[lang];
+  const base = lang === defaultLang ? './' : '../';
   const fullName = escape(`${nombre} ${apellido}`);
-  const initials = escape(nombre.charAt(0) + apellido.charAt(0));
   const contactHref = destination(contacto, 'contacto');
-  const pageUrl = new URL(url);
-  if (!['https:', 'http:'].includes(pageUrl.protocol) || pageUrl.username || pageUrl.password) {
+  const siteRoot = new URL(url);
+  if (!['https:', 'http:'].includes(siteRoot.protocol) || siteRoot.username || siteRoot.password) {
     throw new Error('SITE_URL debe ser una URL pública con https: o http:.');
   }
-  pageUrl.hash = '';
-  pageUrl.search = '';
-  if (!pageUrl.pathname.endsWith('/')) pageUrl.pathname += '/';
-  const imageUrl = new URL('og-image.jpg', pageUrl);
+  siteRoot.hash = '';
+  siteRoot.search = '';
+  if (!siteRoot.pathname.endsWith('/')) siteRoot.pathname += '/';
+  const pageUrl = new URL(langPath(lang), siteRoot);
+  const imageUrl = new URL('og-image.jpg', siteRoot);
+  const alternates = languages.map(code => `<link rel="alternate" hreflang="${code}" href="${escape(new URL(langPath(code), siteRoot).href)}">`).join('\n  ');
+  const switcher = languages.map(code => `<a href="${base}${langPath(code)}" hreflang="${code}" lang="${code}" title="${ui[code].name}"${code === lang ? ' aria-current="page"' : ''}>${code.toUpperCase()}</a>`).join('');
   return `<!doctype html>
-<html lang="es">
+<html lang="${lang}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="${escape(rol || intro)}">
   <meta name="robots" content="noindex">
+  <script>
+    try {
+      const theme = localStorage.getItem('portfolio-theme');
+      if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+    } catch {}
+  </script>
   <meta name="theme-color" content="#f5f2ea">
-  <title>${fullName} — Portfolio personal</title>
-  <meta property="og:title" content="${fullName} — Portfolio personal">
+  <title>${fullName} — ${t.portfolio}</title>
+  <link rel="canonical" href="${escape(pageUrl.href)}">
+  ${alternates}
+  <link rel="alternate" hreflang="x-default" href="${escape(siteRoot.href)}">
+  <meta property="og:title" content="${fullName} — ${t.portfolio}">
   <meta property="og:description" content="${escape(intro)}">
   <meta property="og:image" content="${escape(imageUrl.href)}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:type" content="image/jpeg">
-  <meta property="og:image:alt" content="Portfolio personal de ${fullName}: proyectos, ideas y enlaces.">
+  <meta property="og:image:alt" content="${t.imageAlt(fullName)}">
   <meta property="og:url" content="${escape(pageUrl.href)}">
   <meta property="og:type" content="website">
-  <meta property="og:locale" content="es_ES">
+  <meta property="og:locale" content="${t.locale}">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="${fullName} — Portfolio personal">
+  <meta name="twitter:title" content="${fullName} — ${t.portfolio}">
   <meta name="twitter:description" content="${escape(intro)}">
   <meta name="twitter:image" content="${escape(imageUrl.href)}">
-  <link rel="icon" href="./icon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="./icon-192.png">
-  <link rel="manifest" href="./site.webmanifest" crossorigin="use-credentials">
-  <link rel="preload" href="./fonts/geist-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="./fonts/ibm-plex-sans-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
-  ${styles ? `<style>${styles}</style>` : '<link rel="stylesheet" href="./styles.css">'}
+  <link rel="icon" href="${base}icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="${base}icon-192.png">
+  <link rel="manifest" href="${base}site.webmanifest" crossorigin="use-credentials">
+  <link rel="preload" href="${base}fonts/geist-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="${base}fonts/ibm-plex-sans-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
+  ${styles ? `<style>${styles.replaceAll('url("./', `url("${base}`)}</style>` : `<link rel="stylesheet" href="${base}styles.css"><link rel="stylesheet" href="${base}laminar.css">`}
 </head>
 <body id="inicio">
-  <a class="skip" href="#contenido">Saltar al contenido</a>
+  <a class="skip" href="#contenido">${t.skip}</a>
   <header class="masthead">
     <div class="shell masthead-inner">
-      <a class="brand" href="#inicio" aria-label="${initials}. ${fullName}, inicio">${initials === 'MF' ? `<svg class="brand-mark" viewBox="0 0 80 52" width="68" height="44" aria-hidden="true" focusable="false">
-        <path d="M12 44 20 8 31 27 49 8 41 44 M49 8H73 M45 26H65" fill="none" stroke="currentColor" stroke-width="7" stroke-linejoin="miter"/>
-        <circle class="brand-dot" cx="65" cy="42" r="3.5"/>
-      </svg>` : `${initials}<span>.</span>`}</a>
-      <nav aria-label="Principal">
-        <a href="#proyectos">Proyectos</a>
-        <a href="#enlaces">Enlaces</a>${contactHref ? `
-        <a class="nav-contact" href="${contactHref}">Escríbeme</a>` : ''}
-      </nav>
+      <a class="brand" href="#inicio">${fullName}<span aria-hidden="true">.</span></a>
+      <button class="brand menu-toggle" type="button" aria-expanded="false" aria-controls="header-options" aria-label="${fullName} · ${({es:'Menú',ca:'Menú',en:'Menu'})[lang]}">${fullName}<span aria-hidden="true">.</span></button>
+      <div class="header-options" id="header-options">
+        <nav class="main-nav" aria-label="${t.mainNav}">
+          <a href="#proyectos">${t.projects}</a>
+          <a href="#enlaces">${t.links}</a>${contactHref ? `
+          <a class="nav-contact" href="${contactHref}">${t.contact}</a>` : ''}
+        </nav>
+        <div class="menu-astrolabe" aria-hidden="true"><canvas></canvas></div>
+        <nav class="lang-switch" aria-label="${t.langNav}">${switcher}</nav>
+        <button class="theme-toggle" type="button" hidden aria-pressed="false" aria-label="${({es:'Modo oscuro', ca:'Mode fosc', en:'Dark mode'})[lang]}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <path class="moon" d="M20.5 14.2A8.8 8.8 0 0 1 9.8 3.5a8.8 8.8 0 1 0 10.7 10.7Z"/>
+          <g class="sun"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></g>
+        </svg></button>
+      </div>
     </div>
   </header>
   <main id="contenido">
-    <section class="shell hero" aria-labelledby="nombre">
-      <div class="hero-copy">
-        <p class="mono kicker"><span class="signal" aria-hidden="true"></span> Portfolio personal</p>
-        <h1 id="nombre">${escape(nombre)}<br>${escape(apellido)}<span>.</span></h1>
-        ${rol ? `<p class="hero-role">${escape(rol)}</p>\n        ` : ''}<p class="hero-intro">${escape(intro)}</p>
-        ${contactHref ? `<div class="hero-actions"><a class="primary-action" href="${contactHref}">Escríbeme</a>
-        <a class="primary-action secondary-action" href="#proyectos">Ver proyectos</a></div>` : `<a class="primary-action" href="#proyectos">Ver proyectos</a>`}
+    <section class="hero" aria-label="${t.hero}">
+      <canvas class="laminar-field" aria-hidden="true"></canvas>
+      <div class="shell hero-inner">
+        <div class="hero-copy">
+          <h1 class="sr-only">${fullName}</h1>
+          ${rol ? `<p class="hero-role">${escape(rol)}</p>\n          ` : ''}<p class="hero-intro">${escape(intro)}</p>
+          ${contactHref ? `<div class="hero-actions"><a class="primary-action" href="${contactHref}">${t.contact}</a>
+          <a class="primary-action secondary-action" href="#proyectos">${t.seeProjects}</a></div>` : `<a class="primary-action" href="#proyectos">${t.seeProjects}</a>`}
+        </div>
       </div>
-      <figure class="hero-art" aria-hidden="true">
-        <img src="./estudio.svg" width="420" height="342" alt="">
-      </figure>
     </section>
     <section class="shell work" id="proyectos" aria-labelledby="proyectos-titulo">
       <div class="section-head">
         <div>
-          <p class="mono kicker"><span>01 /</span> Lo que hago</p>
-          <h2 id="proyectos-titulo">Proyectos</h2>
+          <p class="mono kicker">${t.workKicker}</p>
+          <h2 id="proyectos-titulo">${t.projects}</h2>
         </div>
-        <p>${proyectos.length ? 'Un espacio para trabajos, ideas y experimentos.' : 'Todavía no hay proyectos publicados.'}</p>
+        <p>${proyectos.length ? t.workIntro : t.noProjects}</p>
       </div>
-      ${proyectos.length ? `<ul class="project-grid" role="list">${proyectos.map((project, i) => projectCard(project, i, projectImages)).join('')}</ul>` : ''}
+      ${proyectos.length ? `<ul class="project-grid" role="list">${proyectos.map((project, i) => projectCard(project, i, projectImages, t, base)).join('')}</ul>` : ''}
     </section>
     <section class="shelf" id="enlaces" aria-labelledby="enlaces-titulo">
       <div class="shell shelf-inner">
         <div>
-          <p class="mono kicker"><span>02 /</span> Accesos directos</p>
-          <h2 id="enlaces-titulo">A mano<span>.</span></h2>
-          <p>Los enlaces y recursos que quiero encontrar sin dar vueltas.</p>
+          <p class="mono kicker">${t.shelfKicker}</p>
+          <h2 id="enlaces-titulo">${t.shelfTitle}<span>.</span></h2>
+          <p>${t.shelfIntro}</p>
         </div>
-        ${enlaces.length ? `<ul class="shortcut-list" role="list">${enlaces.map(shortcut).join('')}</ul>` : '<p>Todavía no hay enlaces publicados.</p>'}
+        ${enlaces.length ? `<ul class="shortcut-list" role="list">${enlaces.map((item, i) => shortcut(item, i, t)).join('')}</ul>` : `<p>${t.noLinks}</p>`}
       </div>
     </section>
   </main>
+  <script type="module" src="${base}hero.js"></script>
+  <script type="module" src="${base}laminar.js"></script>
+  <script type="module" src="${base}astrolabe.js"></script>
 </body>
 </html>
 `;
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && import.meta.url === pathToFileURL(realpathSync(process.argv[1])).href) {
   const root = new URL('./', import.meta.url);
   const output = new URL('dist/', root);
   const input = await readFile(new URL('contenido.json', root), 'utf8');
@@ -175,14 +248,17 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     throw new Error(`contenido.json: ${error.message}`, { cause: error });
   }
   const source = new URL('site/', root);
-  const styles = await readFile(new URL('styles.css', source), 'utf8');
+  const styles = (await Promise.all(['styles.css', 'laminar.css'].map(file => readFile(new URL(file, source), 'utf8')))).join('\n');
   const files = await readdir(new URL('proyectos/', source), { withFileTypes: true }).catch(error => {
     if (error.code === 'ENOENT') return [];
     throw error;
   });
   const projectImages = new Set(files.filter(file => file.isFile() && coverExtensions.test(file.name)).map(file => file.name));
-  const page = render(data, { styles, projectImages });
   await mkdir(output, { recursive: true });
   await cp(source, output, { recursive: true });
-  await writeFile(new URL('index.html', output), page);
+  for (const lang of languages) {
+    const folder = new URL(langPath(lang), output);
+    await mkdir(folder, { recursive: true });
+    await writeFile(new URL('index.html', folder), render(data, { styles, projectImages, lang }));
+  }
 }

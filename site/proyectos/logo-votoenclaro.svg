@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 320" role="img" aria-label="Voto en claro">
+  <!-- Marca de Voto en claro (su favicon), centrada sobre su color de fondo. -->
+  <rect width="960" height="320" fill="#202727"/>
+  <g transform="translate(362 42) scale(4)">
+    <path d="M14 45L45 14M25 14h20v20" fill="none" stroke="#ffd269" stroke-width="7" stroke-linejoin="round" stroke-linecap="square"/>
+  </g>
+</svg>

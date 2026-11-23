@@ -1,0 +1,36 @@
+/* Hero «Laminar». Se carga después de styles.css. El hero es siempre negro, en ambos temas,
+   y conserva la composición del hero anterior: el texto abajo a la izquierda y el CTA naranja. */
+.hero:has(.laminar-field),
+html:not(.menu-open) .masthead:has(+ main .laminar-field) {
+  color-scheme: dark;
+  --bg: #000;
+  --primary-action: var(--ember); /* contraste 7,4:1 con el texto oscuro */
+}
+.hero:has(.laminar-field) {
+  position: relative;
+  isolation: isolate;
+  background: #000;
+  padding-block-start: max(32svh, 180px);
+}
+@media (hover: hover) {
+  .hero:has(.laminar-field) .primary-action:not(.secondary-action):hover { background: color-mix(in srgb, var(--ember) 85%, white); }
+}
+/* El lienzo cubre todo el hero, de borde a borde; el texto queda por encima. */
+.laminar-field {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+.hero-inner {
+  position: relative;
+  z-index: 2;
+}
+@media (max-width: 760px) {
+  .hero:has(.laminar-field) {
+    padding-block-start: max(48svh, 190px);
+  }
+}

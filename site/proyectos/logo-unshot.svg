@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480" role="img" aria-label="Unshot Studio">
+  <defs>
+    <radialGradient id="surface" cx="48%" cy="44%" r="46%">
+      <stop stop-color="#242220"/>
+      <stop offset="1" stop-color="#1c1b1a"/>
+    </radialGradient>
+    <!-- Shared cap: 45 units wide with 10-unit upper corner radii. -->
+    <path id="cap" d="M0 12V10a10 10 0 0 1 10-10h25a10 10 0 0 1 10 10v2Z"/>
+  </defs>
+  <rect width="480" height="480" fill="url(#surface)"/>
+  <g fill="#f9f4ea">
+    <path d="M108 151h45v93c0 38 28 68 65 68h43c37 0 65-30 65-68v-32h45v32c0 60-48 109-109 109h-45c-61 0-109-49-109-109Z"/>
+    <use href="#cap" x="108" y="141"/>
+    <use href="#cap" x="326" y="202"/>
+  </g>
+  <circle cx="348.5" cy="165" r="25" fill="#fe4c24"/>
+</svg>

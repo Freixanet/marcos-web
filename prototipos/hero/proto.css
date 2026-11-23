@@ -1,0 +1,47 @@
+@font-face { font-family: Geist; src: url("fonts/geist-latin-variable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "IBM Plex Sans"; src: url("fonts/ibm-plex-sans-latin-variable.woff2") format("woff2"); font-weight: 100 700; font-display: swap; }
+@font-face { font-family: "Martian Mono"; src: url("fonts/martian-mono-latin-variable.woff2") format("woff2"); font-weight: 100 800; font-display: swap; }
+
+:root {
+  --text: #f2efe9;
+  --muted: rgb(242 239 233 / .62);
+  --accent: #ffa470;
+  --gutter: clamp(18px, 5vw, 64px);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; background: #000; color: var(--text); font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+
+.top { position: absolute; inset: 0 0 auto; z-index: 3; display: flex; align-items: center; gap: clamp(16px, 4vw, 40px); height: 72px; padding-inline: var(--gutter); }
+.brand { margin-right: auto; font: 500 1.05rem/1 Geist, sans-serif; letter-spacing: -.02em; white-space: nowrap; }
+.brand span { color: var(--accent); }
+.links { display: flex; gap: clamp(12px, 3vw, 32px); font-size: .875rem; font-weight: 500; }
+.links .accent { color: var(--accent); }
+.lang { display: flex; gap: 2px; }
+.lang a { display: inline-flex; justify-content: center; min-width: 34px; padding-block: 14px; color: var(--muted); font: 500 .7rem/1 "Martian Mono", monospace; letter-spacing: .04em; }
+.lang a[aria-current] { color: var(--text); text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 6px; }
+
+.hero { position: relative; isolation: isolate; display: flex; align-items: center; min-height: 100vh; min-height: 100svh; overflow: hidden; background: #000; }
+.stage { position: absolute; inset: 0; z-index: -2; display: block; width: 100%; height: 100%; }
+/* Protege el texto: negro puro que se desvanece, invisible sobre #000. */
+.hero::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: linear-gradient(90deg, #000 0%, rgb(0 0 0 / .88) 24%, rgb(0 0 0 / .45) 42%, rgb(0 0 0 / 0) 58%); }
+.copy { width: min(100%, 720px); padding: 112px var(--gutter) 72px; }
+h1 { max-width: 18ch; margin: 0 0 18px; font: 400 clamp(2rem, 4.2vw, 3.6rem)/1.06 Geist, sans-serif; letter-spacing: -.04em; }
+.copy p { max-width: 38ch; margin: 0; color: var(--muted); font-size: 1.05rem; line-height: 1.55; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.btn { display: inline-flex; align-items: center; min-height: 46px; padding: 10px 16px; border-radius: 4px; font-size: .875rem; font-weight: 500; box-shadow: inset 0 0 0 1px rgb(242 239 233 / .28); }
+.btn.primary { background: var(--text); color: #000; box-shadow: none; }
+
+/* Selector de prototipos (solo para revisar, no forma parte del diseño) */
+.switch { position: fixed; left: 50%; bottom: max(16px, env(safe-area-inset-bottom)); z-index: 5; display: flex; gap: 2px; padding: 4px; border: 1px solid rgb(255 255 255 / .1); border-radius: 999px; background: rgb(20 20 20 / .7); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); transform: translateX(-50%); }
+.switch a { padding: 9px 14px; border-radius: 999px; color: var(--muted); font: 500 .7rem/1 "Martian Mono", monospace; letter-spacing: .02em; white-space: nowrap; }
+.switch a[aria-current] { background: rgb(255 255 255 / .1); color: var(--text); }
+
+@media (max-width: 760px) {
+  .links { display: none; }
+  .top { height: 56px; }
+  .hero { align-items: flex-end; }
+  .hero::after { background: linear-gradient(0deg, #000 0%, rgb(0 0 0 / .86) 30%, rgb(0 0 0 / .35) 48%, rgb(0 0 0 / 0) 60%); }
+  .copy { padding-bottom: 104px; }
+}

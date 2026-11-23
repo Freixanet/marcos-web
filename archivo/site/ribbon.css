@@ -1,0 +1,47 @@
+/* Install after the portfolio stylesheet. The open menu keeps its own theme. */
+.hero:has(.ribbon-stage),
+html:not(.menu-open) .masthead:has(+ main .ribbon-stage) {
+  color-scheme: dark;
+  --bg: #000;
+  --primary-action: #ffa470;
+}
+.hero:has(.ribbon-stage) {
+  isolation: isolate;
+  background: #000;
+}
+.ribbon-stage {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  /* The fragment shader fades its outer pixels to true black. */
+}
+.ribbon-stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.hero-inner {
+  position: relative;
+  z-index: 2;
+}
+.ribbon-stage {
+  background: #000 url("./ribbon-poster.webp") center / contain no-repeat;
+}
+.ribbon-stage canvas {
+  opacity: 0;
+}
+.ribbon-stage.ribbon-live canvas {
+  opacity: 1;
+}
+
+/* Initial poster placement while the module measures the actual text bounds. */
+.ribbon-stage {
+  inset: 12% 4% 9% 52%;
+}
+@media (max-width: 760px) {
+  .ribbon-stage {
+    inset: max(74px, 10%) 4% auto;
+    height: min(36svh, 88vw);
+  }
+}

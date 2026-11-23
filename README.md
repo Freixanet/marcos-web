@@ -43,6 +43,16 @@ Ejemplo de archivo completo; para añadir estas entradas sin borrar las tuyas, c
 
 Si la compilación indica `enlaces[0].url`, revisa la dirección del **primer** enlace: las posiciones empiezan en cero. Si el error apunta a la sintaxis de `contenido.json`, comprueba las comas y las comillas cerca de la posición indicada.
 
+## Idiomas
+
+La web se genera en inglés (`dist/index.html`, el idioma predeterminado), español (`dist/es/`) y catalán (`dist/ca/`). El selector de idioma está en el menú del móvil; en escritorio está oculto por ahora. El idioma de la raíz se cambia en `defaultLang`, dentro de [`build.mjs`](build.mjs). Cualquier texto de `contenido.json` puede ser un texto normal, igual en los tres idiomas, o un bloque con una versión por idioma:
+
+```json
+"intro": { "es": "Hola", "ca": "Hola", "en": "Hi" }
+```
+
+Si falta un idioma se usa el texto en español. Los textos fijos de la interfaz están en `ui`, dentro de [`build.mjs`](build.mjs).
+
 ## Probar y publicar
 
 Con Node.js 22 o posterior y Python 3:
@@ -61,7 +71,7 @@ El resultado está en `dist/`. Puedes publicarlo tal cual en un alojamiento est�
 
 [`site.config.mjs`](site.config.mjs) define la URL pública de respaldo (la vista previa de Devin). Para otro dominio, ejecuta `SITE_URL=https://tu-dominio.es npm run build`. Se utiliza para `og:url` y las imágenes absolutas de Open Graph y Twitter. El alojamiento debe permitir el acceso público a la página y a `og-image.jpg` para que los rastreadores puedan leerlos; una vista previa con inicio de sesión no genera tarjetas públicas.
 
-La tarjeta está en [`site/og-image.jpg`](site/og-image.jpg) (1200 × 630). El build incorpora la hoja CSS pequeña al HTML para evitar una petición bloqueante; no carga JavaScript ni fuentes externas.
+La tarjeta está en [`site/og-image.jpg`](site/og-image.jpg) (1200 × 630). El build incorpora la hoja CSS pequeña al HTML para evitar una petición bloqueante y añade el módulo local sin dependencias [`site/hero.js`](site/hero.js) para la animación del hero; no carga JavaScript ni fuentes externas.
 
 ## Tipografía
 

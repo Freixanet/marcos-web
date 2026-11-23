@@ -1,0 +1,33 @@
+/* Load after the portfolio stylesheet. The canvas belongs to the full-width
+   hero, outside the narrower text shell. */
+.hero:has(.attention-field),
+html:not(.menu-open) .masthead:has(+ main .attention-field) {
+  color-scheme: dark;
+  --bg: #000;
+  --primary-action: #ffa470;
+}
+.hero:has(.attention-field) {
+  position: relative;
+  isolation: isolate;
+  background: #000;
+  padding-block-start: max(32svh, 180px);
+}
+.attention-field {
+  display: block;
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  width: 100%;
+  height: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.hero-inner {
+  position: relative;
+  z-index: 2;
+}
+@media (max-width: 760px) {
+  .hero:has(.attention-field) {
+    padding-block-start: max(48svh, 190px);
+  }
+}

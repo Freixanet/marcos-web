@@ -1,31 +1,101 @@
 {
   "nombre": "Marcos",
   "apellido": "Freixanet",
-  "rol": "Construyo productos completos con Swift, TypeScript y Python, desde Barcelona.",
-  "intro": "Apps de iPhone, webs, y los servidores y agentes que hay detrás.",
+  "rol": {
+    "es": "Hago productos claros y acabados de lo complejo.",
+    "ca": "Faig del que és complex productes clars i acabats.",
+    "en": "I turn complex things into clear, finished products."
+  },
+  "intro": {
+    "es": "Apps de iPhone, webs y los agentes de IA que hay detrás. Diseñados, construidos y publicados por mí, desde Barcelona.",
+    "ca": "Apps d'iPhone, webs i els agents d'IA que hi ha al darrere. Dissenyats, construïts i publicats per mi, des de Barcelona.",
+    "en": "iPhone apps, websites and the AI agents behind them. Designed, built and shipped by me, from Barcelona."
+  },
   "contacto": "mailto:mfreixanet@icloud.com",
   "proyectos": [
     {
-      "titulo": "Un proyecto propio",
-      "descripcion": "Para algo que hayas construido y quieras enseñar.",
-      "categoria": "Construir",
-      "url": ""
+      "titulo": "Unshot Studio",
+      "logo": "logo-unshot.svg",
+      "descripcion": {
+        "es": "Convierte una foto de producto hecha con el móvil en fotos de catálogo y de ambiente.",
+        "ca": "Converteix una foto de producte feta amb el mòbil en fotos de catàleg i d'ambient.",
+        "en": "Turns a phone photo of a product into catalog and lifestyle shots."
+      },
+      "categoria": {
+        "es": "IA · Python",
+        "ca": "IA · Python",
+        "en": "AI · Python"
+      },
+      "url": "https://github.com/Freixanet/unshot"
     },
     {
-      "titulo": "Una idea en marcha",
-      "descripcion": "Para una idea que todavía estés investigando o probando.",
-      "categoria": "Explorar",
-      "url": ""
+      "titulo": "Alice",
+      "logo": "logo-alice.png",
+      "descripcion": {
+        "es": "App nativa de iPhone para hablar con tu propio agente Hermes y seguir su trabajo.",
+        "ca": "App nativa d'iPhone per parlar amb el teu propi agent Hermes i seguir-ne la feina.",
+        "en": "A native iPhone app to talk to your own Hermes agent and follow its work."
+      },
+      "categoria": {
+        "es": "App iOS · Swift",
+        "ca": "App iOS · Swift",
+        "en": "iOS app · Swift"
+      },
+      "url": "https://myalice.app/"
     },
     {
-      "titulo": "Algo que aprendí",
-      "descripcion": "Para un experimento, un apunte o algo que quieras compartir.",
-      "categoria": "Compartir",
-      "url": ""
+      "titulo": "Ep, Súria!",
+      "logo": "logo-suria.svg",
+      "descripcion": {
+        "es": "Web independiente con servicios, horarios y agenda de Súria, en catalán y castellano.",
+        "ca": "Web independent amb serveis, horaris i agenda de Súria, en català i castellà.",
+        "en": "An independent site with local services, timetables and events for Súria, in Catalan and Spanish."
+      },
+      "categoria": {
+        "es": "Web · Astro",
+        "ca": "Web · Astro",
+        "en": "Web · Astro"
+      },
+      "url": "https://freixanet.github.io/suria/"
+    },
+    {
+      "titulo": "Voto en claro",
+      "logo": "logo-votoenclaro.svg",
+      "descripcion": {
+        "es": "Compara por temas qué propone cada partido, con su fuente y su fecha.",
+        "ca": "Compara per temes què proposa cada partit, amb la font i la data.",
+        "en": "Compares what each party proposes, topic by topic, with source and date."
+      },
+      "categoria": {
+        "es": "Web · JavaScript",
+        "ca": "Web · JavaScript",
+        "en": "Web · JavaScript"
+      },
+      "url": "https://freixanet.github.io/voto-en-claro/"
     }
   ],
   "enlaces": [
-    { "titulo": "Perfiles", "descripcion": "GitHub", "url": "https://github.com/Freixanet" },
-    { "titulo": "Recursos", "descripcion": "Material que quiero tener a mano", "url": "" }
+    {
+      "titulo": {
+        "es": "Perfiles",
+        "ca": "Perfils",
+        "en": "Profiles"
+      },
+      "descripcion": "GitHub",
+      "url": "https://github.com/Freixanet"
+    },
+    {
+      "titulo": {
+        "es": "Recursos",
+        "ca": "Recursos",
+        "en": "Resources"
+      },
+      "descripcion": {
+        "es": "Material que quiero tener a mano",
+        "ca": "Material que vull tenir a mà",
+        "en": "Material I want to keep close at hand"
+      },
+      "url": ""
+    }
   ]
 }

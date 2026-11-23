@@ -56,7 +56,7 @@ test('items with missing URLs never publish broken placeholder links', () => {
   for (const [, target] of html.matchAll(/href="#([^"]+)"/g)) {
     assert.ok(html.includes(`id="${target}"`), `Missing destination: #${target}`);
   }
-  assert.doesNotMatch(html, /href=""|href="#"|href="https?:/);
+  assert.doesNotMatch(html.slice(html.indexOf('<body')), /href=""|href="#"|href="https?:/);
   assert.equal((html.match(/Sin enlace aún/g) ?? []).length, 2);
 });
 
@@ -68,7 +68,7 @@ test('configured links work, and editable content is escaped', () => {
     enlaces: [{ ...shortcut, url: 'mailto:marcos@example.com' }],
   });
   assert.match(html, /A &amp; B &quot;en portada&quot;/);
-  assert.match(html, /<h3>&lt;Primero&gt;<\/h3>/);
+  assert.match(html, /<a class="project-card" href="[^"]+" aria-labelledby="project-title-0">[\s\S]*?<h3 id="project-title-0">&lt;Primero&gt; <span class="project-category">\( Test \)<\/span><\/h3>[\s\S]*?<\/a>/);
   assert.match(html, /href="https:\/\/example\.com\/\?a=1&amp;b=2"/);
   assert.match(html, /href="mailto:marcos@example\.com"/);
 });
@@ -105,7 +105,7 @@ test('the build copies existing covers and illustrates cards with no cover', asy
   const filename = 'Portada móvil.svg';
   const cover = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><rect width="1" height="1"/></svg>';
   await mkdir(join(root, 'site', 'proyectos'), { recursive: true });
-  for (const file of ['build.mjs', 'site.config.mjs', 'site/styles.css']) {
+  for (const file of ['build.mjs', 'site.config.mjs', 'site/styles.css', 'site/hero.js', 'site/laminar.css', 'site/laminar.js']) {
     await copyFile(new URL(file, import.meta.url), join(root, file));
   }
   await writeFile(join(root, 'site', 'proyectos', filename), cover);
@@ -121,6 +121,10 @@ test('the build copies existing covers and illustrates cards with no cover', asy
   assert.doesNotMatch(html, /no-existe.webp/);
   assert.equal((html.match(/<svg viewBox="0 0 320 120"/g) ?? []).length, 2);
   assert.equal(await readFile(join(root, 'dist', 'proyectos', filename), 'utf8'), cover);
+  assert.equal(
+    await readFile(join(root, 'dist', 'hero.js'), 'utf8'),
+    await readFile(new URL('site/hero.js', import.meta.url), 'utf8'),
+  );
 });
 
 test('empty sections still have navigation targets', () => {
@@ -137,7 +141,8 @@ test('sharing metadata uses Spanish text and an absolute configured image URL', 
   assert.match(html, /property="og:title" content="Marcos Freixanet — Portfolio personal"/);
   assert.match(html, /property="og:description" content="Ideas &amp; proyectos"/);
   assert.match(html, /property="og:image" content="https:\/\/example.com\/portfolio\/og-image.jpg"/);
-  assert.match(html, /property="og:url" content="https:\/\/example.com\/portfolio\/"/);
+  assert.match(html, /property="og:url" content="https:\/\/example.com\/portfolio\/es\/"/);
+  assert.match(html, /hreflang="x-default" href="https:\/\/example.com\/portfolio\/"/);
   assert.match(html, /property="og:type" content="website"/);
   assert.match(html, /property="og:locale" content="es_ES"/);
   assert.match(html, /name="twitter:card" content="summary_large_image"/);
@@ -160,4 +165,44 @@ test('build can inline the small stylesheet without a blocking CSS request', () 
   assert.match(html, /<style>body \{ margin: 0; \}<\/style>/);
   assert.doesNotMatch(html, /rel="stylesheet"/);
   assert.match(render(profile, { styles: '' }), /rel="stylesheet"/);
+});
+
+test('each language gets its own page, interface text and switcher', () => {
+  const data = {
+    ...profile,
+    intro: { es: 'Hola', ca: 'Hola, sóc', en: 'Hi there' },
+    proyectos: [{ titulo: { es: 'Mapa', en: 'Map' } }],
+  };
+  const es = render(data);
+  const ca = render(data, { lang: 'ca', url: 'https://example.com/' });
+  const en = render(data, { lang: 'en', url: 'https://example.com/' });
+  assert.match(es, /<html lang="es">/);
+  assert.match(es, /class="hero-intro">Hola</);
+  assert.match(es, /<a href="\.\.\/es\/" hreflang="es" lang="es" title="Español" aria-current="page">ES<\/a>/);
+  assert.match(es, /<a href="\.\.\/" hreflang="en"/);
+  assert.match(ca, /<html lang="ca">/);
+  assert.match(ca, /class="hero-intro">Hola, sóc</);
+  assert.match(ca, /<h3>Mapa<\/h3>/, 'missing translations fall back to Spanish');
+  assert.match(ca, /Encara sense enllaç/);
+  assert.match(ca, /href="\.\.\/icon\.svg"/);
+  assert.match(ca, /property="og:url" content="https:\/\/example.com\/ca\/"/);
+  assert.match(en, /<h3>Map<\/h3>/);
+  assert.match(en, /<h2 id="proyectos-titulo">Projects<\/h2>/);
+  assert.match(en, /<a href="\.\/es\/" hreflang="es"/);
+  assert.match(en, /href="\.\/icon\.svg"/);
+  assert.match(en, /property="og:url" content="https:\/\/example.com\/"/);
+  assert.match(en, /hreflang="en" lang="en" title="English" aria-current="page"/);
+  assert.match(en, /property="og:locale" content="en_GB"/);
+  assert.throws(() => render(data, { lang: 'fr' }));
+});
+
+test('each hero has a single heading and a decorative laminar field', () => {
+  for (const lang of ['es', 'ca', 'en']) {
+    const html = render(profile, { lang });
+    assert.match(html, /<canvas class="laminar-field" aria-hidden="true"><\/canvas>/);
+    assert.match(html, /<script type="module" src="[^"]*hero\.js"/);
+    assert.match(html, /<script type="module" src="[^"]*laminar\.js"/);
+    assert.equal((html.match(/<h1 /g) ?? []).length, 1);
+    assert.doesNotMatch(html, /hero-motion-toggle/);
+  }
 });
