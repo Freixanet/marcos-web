@@ -114,7 +114,10 @@ export function render({ nombre, apellido, intro, rol, contacto, proyectos = [],
   <a class="skip" href="#contenido">Saltar al contenido</a>
   <header class="masthead">
     <div class="shell masthead-inner">
-      <a class="brand mono" href="#inicio" aria-label="${initials}. ${fullName}, inicio">${initials}<span>.</span></a>
+      <a class="brand" href="#inicio" aria-label="${initials}. ${fullName}, inicio">${initials === 'MF' ? `<svg class="brand-mark" viewBox="0 0 80 52" width="68" height="44" aria-hidden="true" focusable="false">
+        <path d="M12 44 20 8 31 27 49 8 41 44 M49 8H73 M45 26H65" fill="none" stroke="currentColor" stroke-width="7" stroke-linejoin="miter"/>
+        <circle class="brand-dot" cx="65" cy="42" r="3.5"/>
+      </svg>` : `${initials}<span>.</span>`}</a>
       <nav aria-label="Principal">
         <a href="#proyectos">Proyectos</a>
         <a href="#enlaces">Enlaces</a>${contactHref ? `
