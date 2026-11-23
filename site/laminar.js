@@ -9,36 +9,38 @@
 
 const VERTEX = `#version 300 es
 precision highp float;
-layout(location = 0) in float aT;
+layout(location = 0) in float aU;
 layout(location = 1) in vec4 aSeed; // carril, aleatorio, aleatorio, acento
-uniform float uTime;
+uniform vec2 uTime;          // t, 0.25 * sin(t * 0.06)
 uniform vec2 uFocus;
-uniform vec4 uCopy;    // rectángulo del texto en fracciones del hero: x0, y0, x1, y1
+uniform vec2 uCopyCenter;    // centro del óvalo de protección del texto
+uniform vec2 uCopyInvRadius; // 1 / radio del óvalo de protección
 uniform float uAspect;
-uniform vec3 uPointer; // x, y (fracciones del hero), fuerza
-uniform float uNarrow;
+uniform vec3 uPointer;       // x, y (fracciones del hero), fuerza
+uniform float uPinchK;       // -1 / (narrow ? 0.05 : 0.018)
+uniform float uOpenScale;    // narrow ? 0.55 : 1.0
 out float vAlpha;
 out float vAccent;
 
 void main() {
-  float u = mix(-0.03, 1.03, aT);
+  float u = aU;
   float lane = aSeed.x, r1 = aSeed.y, r2 = aSeed.z, acc = aSeed.w;
-  float t = uTime;
+  float t = uTime.x;
   float dx = u - uFocus.x;
 
   // Línea central: una gran S suave que respira.
   float cy = uFocus.y
-    + 0.09 * sin(6.2831 * 0.5 * u + t * 0.045 - 0.6)
-    + 0.025 * sin(6.2831 * 1.3 * u - t * 0.07 + 1.7);
+    + 0.09 * sin(3.14155 * u + t * 0.045 - 0.6)
+    + 0.025 * sin(8.16803 * u - t * 0.07 + 1.7);
 
   // Anchura de la corriente: abierta lejos del foco, recogida en el foco.
-  float pinch = exp(-dx * dx / (uNarrow > 0.5 ? 0.05 : 0.018));
-  float open = mix(0.36, 0.2, smoothstep(-0.1, 0.25, dx)) * (uNarrow > 0.5 ? 0.55 : 1.0);
+  float pinch = exp(dx * dx * uPinchK);
+  float open = mix(0.36, 0.2, smoothstep(-0.1, 0.25, dx)) * uOpenScale;
   float spread = mix(open, 0.035, pinch);
 
   // Trenzado y giro de cinta al pasar por el foco.
-  float braid = 0.18 * sin(6.2831 * (1.6 * u) + lane * 3.1 + t * 0.12 + r1 * 2.0);
-  float phi = 3.1416 * smoothstep(-0.35, 0.35, dx) + 0.25 * sin(t * 0.06);
+  float braid = 0.18 * sin(10.05296 * u + lane * 3.1 + t * 0.12 + r1 * 2.0);
+  float phi = 3.1416 * smoothstep(-0.35, 0.35, dx) + uTime.y;
   float depth = sin(phi) * lane;
   float y = cy + spread * (lane * cos(phi) + 0.35 * depth * dx + braid * (1.0 - pinch * 0.6));
 
@@ -46,14 +48,17 @@ void main() {
   float turbAmp = (0.004 + 0.05 * smoothstep(0.62, 0.0, u) * (1.0 - pinch)) * mix(1.0, 0.25, acc);
   y += turbAmp * (0.6 * sin(17.0 * u + r1 * 40.0 + t * 0.9) + 0.4 * sin(23.0 * u + r2 * 60.0 - t * 1.4));
 
-  // El cursor aparta la corriente.
-  vec2 d = vec2((u - uPointer.x) * uAspect, y - uPointer.y);
-  float fall = exp(-dot(d, d) / 0.012);
-  y += uPointer.z * 0.07 * fall * sign(d.y + 1e-4);
+  // El cursor aparta la corriente (rama uniforme: sin coste cuando el puntero no está activo).
+  if (uPointer.z > 0.001) {
+    vec2 d = vec2((u - uPointer.x) * uAspect, y - uPointer.y);
+    float fall = exp(-dot(d, d) * 83.3333333);
+    y += uPointer.z * 0.07 * fall * sign(d.y + 1e-4);
+  }
 
   // Paquetes de luz que viajan hacia la derecha a lo largo de cada filamento.
   float pk = fract(u * 0.7 - t * 0.05 * (0.6 + r1) - r2);
-  float packet = exp(-pow((pk - 0.5) / 0.035, 2.0));
+  float pd = (pk - 0.5) * 28.5714286;
+  float packet = exp(-pd * pd);
   float a = (0.012 + 0.026 * r2) * (0.45 + 1.8 * packet) * (0.75 + 0.25 * depth);
   a *= 1.0 + 0.5 * pinch;
   if (acc > 0.5) a = (0.35 + 0.65 * packet) * smoothstep(0.1, 0.45, u);
@@ -61,9 +66,7 @@ void main() {
   // Se funde arriba (barra superior) y abajo, y se apaga alrededor del texto.
   a *= smoothstep(0.02, 0.16, y) * smoothstep(1.0, 0.86, y);
   // Óvalo muy suave alrededor del texto: sin esquinas ni bordes visibles.
-  vec2 center = (uCopy.xy + uCopy.zw) * 0.5;
-  vec2 radius = (uCopy.zw - uCopy.xy) * 0.5 + vec2(0.06 / uAspect, 0.06);
-  float r = length((vec2(u, y) - center) / max(radius, vec2(1e-3)));
+  float r = length((vec2(u, y) - uCopyCenter) * uCopyInvRadius);
   a *= mix(0.05, 1.0, smoothstep(0.75, 1.7, r));
 
   vAlpha = a;
@@ -72,7 +75,7 @@ void main() {
 }`;
 
 const FRAGMENT = `#version 300 es
-precision highp float;
+precision mediump float;
 in float vAlpha;
 in float vAccent;
 out vec4 o;
@@ -88,7 +91,14 @@ export function mountLaminar(canvas) {
   if (mounts.has(canvas)) return mounts.get(canvas);
   const hero = canvas.closest('.hero');
   const copy = hero?.querySelector('.hero-copy');
-  const gl = canvas.getContext('webgl2', { antialias: true, alpha: false, depth: false, powerPreference: 'high-performance' });
+  const gl = canvas.getContext('webgl2', {
+    antialias: true,
+    alpha: false,
+    depth: false,
+    stencil: false,
+    preserveDrawingBuffer: false,
+    powerPreference: 'high-performance',
+  });
   if (!gl || !hero) return () => {};
 
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
@@ -98,7 +108,9 @@ export function mountLaminar(canvas) {
 
   let prog, uni, tBuf, seedBuf, vao;
   let M = 0, count = 0, builtFor = null;
-  let width = 0, height = 0, raf = 0, visible = true, lost = false;
+  let width = 0, height = 0, heroLeft = 0, heroTop = 0;
+  let raf = 0, resizeRaf = 0, lastFrame = 0;
+  let visible = true, menuOpen = false, lost = false;
   const focus = [0.7, 0.38], rect = [0, 0, 0, 0];
   const pointer = { x: 0.5, y: 0.5, tx: 0.5, ty: 0.5, on: 0, ton: 0 };
   const start = performance.now();
@@ -113,12 +125,19 @@ export function mountLaminar(canvas) {
 
   function init() {
     prog = gl.createProgram();
-    gl.attachShader(prog, compile(gl.VERTEX_SHADER, VERTEX));
-    gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FRAGMENT));
+    const vs = compile(gl.VERTEX_SHADER, VERTEX);
+    const fs = compile(gl.FRAGMENT_SHADER, FRAGMENT);
+    gl.attachShader(prog, vs);
+    gl.attachShader(prog, fs);
     gl.linkProgram(prog);
+    gl.deleteShader(vs);
+    gl.deleteShader(fs);
     if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
     gl.useProgram(prog);
-    uni = Object.fromEntries(['uTime', 'uFocus', 'uCopy', 'uAspect', 'uPointer', 'uNarrow'].map(n => [n, gl.getUniformLocation(prog, n)]));
+    uni = Object.fromEntries(
+      ['uTime', 'uFocus', 'uCopyCenter', 'uCopyInvRadius', 'uAspect', 'uPointer', 'uPinchK', 'uOpenScale']
+        .map(n => [n, gl.getUniformLocation(prog, n)])
+    );
     vao = gl.createVertexArray();
     gl.bindVertexArray(vao);
     tBuf = gl.createBuffer();
@@ -133,20 +152,24 @@ export function mountLaminar(canvas) {
   function build(narrow) {
     M = narrow ? 160 : 240;
     count = narrow ? 1400 : 2600;
-    const ts = new Float32Array(M);
-    for (let i = 0; i < M; i++) ts[i] = i / (M - 1);
+    const us = new Float32Array(M);
+    const step = 1.06 / (M - 1);
+    for (let i = 0; i < M; i++) us[i] = -0.03 + i * step;
     gl.bindBuffer(gl.ARRAY_BUFFER, tBuf);
-    gl.bufferData(gl.ARRAY_BUFFER, ts, gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, us, gl.STATIC_DRAW);
     gl.enableVertexAttribArray(0);
     gl.vertexAttribPointer(0, 1, gl.FLOAT, false, 0, 0);
 
     let seed = 12345;
     const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
     const seeds = new Float32Array(count * 4);
-    for (let i = 0; i < count; i++) {
+    for (let i = 0, off = 0; i < count; i++, off += 4) {
       const accent = i % 200 === 7 ? 1 : 0;
       const g = ((rnd() + rnd() + rnd()) / 3) * 2 - 1; // más densidad en el centro de la corriente
-      seeds.set([accent ? g * 0.25 : g * 1.15, rnd(), rnd(), accent], i * 4);
+      seeds[off] = accent ? g * 0.25 : g * 1.15;
+      seeds[off + 1] = rnd();
+      seeds[off + 2] = rnd();
+      seeds[off + 3] = accent;
     }
     gl.bindBuffer(gl.ARRAY_BUFFER, seedBuf);
     gl.bufferData(gl.ARRAY_BUFFER, seeds, gl.STATIC_DRAW);
@@ -157,14 +180,21 @@ export function mountLaminar(canvas) {
   }
 
   function layout() {
+    if (lost) return;
     const h = hero.getBoundingClientRect();
     width = h.width;
     height = h.height;
     if (!width || !height) return;
+    heroLeft = h.left + window.scrollX;
+    heroTop = h.top + window.scrollY;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.round(width * dpr);
-    canvas.height = Math.round(height * dpr);
-    gl.viewport(0, 0, canvas.width, canvas.height);
+    const targetW = Math.round(width * dpr);
+    const targetH = Math.round(height * dpr);
+    if (canvas.width !== targetW || canvas.height !== targetH) {
+      canvas.width = targetW;
+      canvas.height = targetH;
+      gl.viewport(0, 0, targetW, targetH);
+    }
     const narrow = mobile.matches;
     if (builtFor !== narrow) build(narrow);
     // Rectángulo del texto, con margen, y foco de la corriente por encima o a la derecha de él.
@@ -177,20 +207,36 @@ export function mountLaminar(canvas) {
     }
     focus[0] = narrow ? 0.55 : 0.7;
     focus[1] = narrow ? Math.max(0.22, rect[1] * 0.55) : Math.min(0.48, Math.max(0.3, rect[1] - 0.06));
+
+    const aspect = width / height;
+    const cx = (rect[0] + rect[2]) * 0.5;
+    const cy = (rect[1] + rect[3]) * 0.5;
+    const rx = Math.max((rect[2] - rect[0]) * 0.5 + 0.06 / aspect, 1e-3);
+    const ry = Math.max((rect[3] - rect[1]) * 0.5 + 0.06, 1e-3);
+    gl.uniform2f(uni.uFocus, focus[0], focus[1]);
+    gl.uniform2f(uni.uCopyCenter, cx, cy);
+    gl.uniform2f(uni.uCopyInvRadius, 1 / rx, 1 / ry);
+    gl.uniform1f(uni.uAspect, aspect);
+    gl.uniform1f(uni.uPinchK, narrow ? -20 : -55.5555556);
+    gl.uniform1f(uni.uOpenScale, narrow ? 0.55 : 1);
   }
 
   function frame(now) {
     if (lost || !width || !height) return;
-    pointer.x += (pointer.tx - pointer.x) * 0.08;
-    pointer.y += (pointer.ty - pointer.y) * 0.08;
-    pointer.on += (pointer.ton - pointer.on) * 0.05;
+    const dt = lastFrame ? Math.min(0.05, Math.max(0, (now - lastFrame) / 1000)) : 1 / 60;
+    lastFrame = now;
+    if (pointer.ton > 0 || pointer.on > 0) {
+      const kPos = 1 - Math.pow(0.92, dt * 60);
+      const kOn = 1 - Math.pow(0.95, dt * 60);
+      pointer.x += (pointer.tx - pointer.x) * kPos;
+      pointer.y += (pointer.ty - pointer.y) * kPos;
+      pointer.on += (pointer.ton - pointer.on) * kOn;
+      if (pointer.ton === 0 && pointer.on < 0.0005) pointer.on = 0;
+    }
+    const t = (now - start) / 1000 + 20;
     gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.uniform1f(uni.uTime, (now - start) / 1000 + 20);
-    gl.uniform2f(uni.uFocus, focus[0], focus[1]);
-    gl.uniform4f(uni.uCopy, rect[0], rect[1], rect[2], rect[3]);
-    gl.uniform1f(uni.uAspect, width / height);
+    gl.uniform2f(uni.uTime, t, 0.25 * Math.sin(t * 0.06));
     gl.uniform3f(uni.uPointer, pointer.x, pointer.y, pointer.on);
-    gl.uniform1f(uni.uNarrow, mobile.matches ? 1 : 0);
     gl.drawArraysInstanced(gl.LINE_STRIP, 0, M, count);
   }
 
@@ -200,23 +246,33 @@ export function mountLaminar(canvas) {
     schedule();
   }
 
-  // Solo anima mientras el hero se ve y la pestaña está activa; con «reducir movimiento», un fotograma fijo.
+  // Solo anima mientras el hero se ve, el menú está cerrado y la pestaña está activa; con «reducir movimiento», un fotograma fijo.
   function schedule() {
     if (raf || lost) return;
-    if (reduced.matches) { frame(start + 12000); return; }
-    if (visible && !document.hidden) raf = requestAnimationFrame(tick);
+    if (reduced.matches) { lastFrame = 0; frame(start + 12000); return; }
+    if (visible && !menuOpen && !document.hidden) raf = requestAnimationFrame(tick);
   }
 
   function stop() {
     cancelAnimationFrame(raf);
     raf = 0;
+    lastFrame = 0;
+  }
+
+  function scheduleLayout() {
+    if (resizeRaf) return;
+    resizeRaf = requestAnimationFrame(() => {
+      resizeRaf = 0;
+      layout();
+      if (reduced.matches || !raf) frame(reduced.matches ? start + 12000 : performance.now());
+    });
   }
 
   init();
   layout();
   schedule();
 
-  const resizer = new ResizeObserver(() => { layout(); frame(performance.now()); });
+  const resizer = new ResizeObserver(scheduleLayout);
   resizer.observe(hero);
   if (copy) resizer.observe(copy);
   const seen = new IntersectionObserver(([entry]) => {
@@ -226,15 +282,19 @@ export function mountLaminar(canvas) {
   seen.observe(hero);
 
   document.addEventListener('visibilitychange', () => (document.hidden ? stop() : schedule()), { signal: listeners.signal });
+  document.addEventListener('portfolio:menu', e => {
+    menuOpen = Boolean(e.detail?.open);
+    if (menuOpen) stop(); else schedule();
+  }, { signal: listeners.signal });
   reduced.addEventListener('change', () => { stop(); schedule(); }, { signal: listeners.signal });
-  mobile.addEventListener('change', layout, { signal: listeners.signal });
+  mobile.addEventListener('change', scheduleLayout, { signal: listeners.signal });
   canvas.addEventListener('webglcontextlost', e => { e.preventDefault(); lost = true; stop(); }, { signal: listeners.signal });
   canvas.addEventListener('webglcontextrestored', () => { lost = false; init(); layout(); schedule(); }, { signal: listeners.signal });
 
   hero.addEventListener('pointermove', e => {
-    const h = hero.getBoundingClientRect();
-    pointer.tx = (e.clientX - h.left) / h.width;
-    pointer.ty = (e.clientY - h.top) / h.height;
+    if (!width || !height) return;
+    pointer.tx = (e.pageX - heroLeft) / width;
+    pointer.ty = (e.pageY - heroTop) / height;
     if (pointer.ton === 0) { pointer.x = pointer.tx; pointer.y = pointer.ty; }
     pointer.ton = 1;
   }, passive);
@@ -243,6 +303,7 @@ export function mountLaminar(canvas) {
 
   function destroy() {
     stop();
+    cancelAnimationFrame(resizeRaf);
     listeners.abort();
     resizer.disconnect();
     seen.disconnect();

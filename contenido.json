@@ -2,14 +2,14 @@
   "nombre": "Marcos",
   "apellido": "Freixanet",
   "rol": {
-    "es": "Hago productos claros y acabados de lo complejo.",
-    "ca": "Faig del que és complex productes clars i acabats.",
-    "en": "I turn complex things into clear, finished products."
+    "es": "Convierto lo complejo en productos claros y reales.",
+    "ca": "Converteixo allò complex en productes clars i reals.",
+    "en": "I turn complex ideas into clear, shipped products."
   },
   "intro": {
-    "es": "Apps de iPhone, webs y los agentes de IA que hay detrás. Diseñados, construidos y publicados por mí, desde Barcelona.",
-    "ca": "Apps d'iPhone, webs i els agents d'IA que hi ha al darrere. Dissenyats, construïts i publicats per mi, des de Barcelona.",
-    "en": "iPhone apps, websites and the AI agents behind them. Designed, built and shipped by me, from Barcelona."
+    "es": "Apps iOS, webs y agentes de IA. Diseñados, construidos y publicados desde Barcelona.",
+    "ca": "Apps iOS, webs i agents d'IA. Dissenyats, construïts i publicats des de Barcelona.",
+    "en": "iPhone apps, web products and AI agents. Designed, built and shipped from Barcelona."
   },
   "contacto": "mailto:mfreixanet@icloud.com",
   "proyectos": [
@@ -17,9 +17,9 @@
       "titulo": "Unshot Studio",
       "logo": "logo-unshot.svg",
       "descripcion": {
-        "es": "Convierte una foto de producto hecha con el móvil en fotos de catálogo y de ambiente.",
-        "ca": "Converteix una foto de producte feta amb el mòbil en fotos de catàleg i d'ambient.",
-        "en": "Turns a phone photo of a product into catalog and lifestyle shots."
+        "es": "Convierte una foto del móvil en imágenes de catálogo listas para vender.",
+        "ca": "Converteix una foto del mòbil en imatges de catàleg llestes per vendre.",
+        "en": "Turns a quick phone photo into studio-grade catalog and lifestyle shots."
       },
       "categoria": {
         "es": "IA · Python",
@@ -32,9 +32,9 @@
       "titulo": "Alice",
       "logo": "logo-alice.png",
       "descripcion": {
-        "es": "App nativa de iPhone para hablar con tu propio agente Hermes y seguir su trabajo.",
-        "ca": "App nativa d'iPhone per parlar amb el teu propi agent Hermes i seguir-ne la feina.",
-        "en": "A native iPhone app to talk to your own Hermes agent and follow its work."
+        "es": "App nativa de iPhone para dirigir a tu agente Hermes y seguir cada tarea.",
+        "ca": "App nativa d'iPhone per dirigir el teu agent Hermes i seguir cada tasca.",
+        "en": "Native iPhone app to direct your Hermes agent and follow every task live."
       },
       "categoria": {
         "es": "App iOS · Swift",
@@ -47,9 +47,9 @@
       "titulo": "Ep, Súria!",
       "logo": "logo-suria.svg",
       "descripcion": {
-        "es": "Web independiente con servicios, horarios y agenda de Súria, en catalán y castellano.",
-        "ca": "Web independent amb serveis, horaris i agenda de Súria, en català i castellà.",
-        "en": "An independent site with local services, timetables and events for Súria, in Catalan and Spanish."
+        "es": "Servicios, horarios y agenda local de Súria en una web rápida y bilingüe.",
+        "ca": "Serveis, horaris i agenda local de Súria en una web ràpida i bilingüe.",
+        "en": "Local services, timetables and events for Súria, fast, clear and bilingual."
       },
       "categoria": {
         "es": "Web · Astro",
@@ -62,9 +62,9 @@
       "titulo": "Voto en claro",
       "logo": "logo-votoenclaro.svg",
       "descripcion": {
-        "es": "Compara por temas qué propone cada partido, con su fuente y su fecha.",
-        "ca": "Compara per temes què proposa cada partit, amb la font i la data.",
-        "en": "Compares what each party proposes, topic by topic, with source and date."
+        "es": "Compara propuestas electorales por tema, cada una con su fuente y fecha.",
+        "ca": "Compara propostes electorals per tema, cadascuna amb la font i la data.",
+        "en": "Side-by-side comparison of party proposals by topic, with source and date."
       },
       "categoria": {
         "es": "Web · JavaScript",
@@ -76,24 +76,24 @@
   ],
   "enlaces": [
     {
-      "titulo": {
-        "es": "Perfiles",
-        "ca": "Perfils",
-        "en": "Profiles"
+      "titulo": "GitHub",
+      "descripcion": {
+        "es": "Repositorios públicos, código fuente y experimentos activos.",
+        "ca": "Repositoris públics, codi font i experiments actius.",
+        "en": "Public repositories, source code and active experiments."
       },
-      "descripcion": "GitHub",
       "url": "https://github.com/Freixanet"
     },
     {
       "titulo": {
-        "es": "Recursos",
-        "ca": "Recursos",
-        "en": "Resources"
+        "es": "Cuaderno",
+        "ca": "Quadern",
+        "en": "Field notes"
       },
       "descripcion": {
-        "es": "Material que quiero tener a mano",
-        "ca": "Material que vull tenir a mà",
-        "en": "Material I want to keep close at hand"
+        "es": "Herramientas, referencias y notas técnicas listas para compartir.",
+        "ca": "Eines, referències i notes tècniques llestes per compartir.",
+        "en": "Tools, references and architecture notes worth sharing."
       },
       "url": ""
     }

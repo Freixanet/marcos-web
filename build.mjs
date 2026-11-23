@@ -42,26 +42,26 @@ const ui = {
   es: {
     name: 'Español', locale: 'es_ES', skip: 'Saltar al contenido', mainNav: 'Principal', langNav: 'Idioma',
     projects: 'Proyectos', links: 'Enlaces', contact: 'Escríbeme', hero: 'Presentación', seeProjects: 'Ver proyectos',
-    workKicker: 'Lo que hago', workIntro: 'Un espacio para trabajos, ideas y experimentos.', noProjects: 'Todavía no hay proyectos publicados.',
-    shelfKicker: 'Accesos directos', shelfTitle: 'A mano', shelfIntro: 'Los enlaces y recursos que quiero encontrar sin dar vueltas.', noLinks: 'Todavía no hay enlaces publicados.',
-    noLink: 'Sin enlace aún', portfolio: 'Portfolio personal',
-    imageAlt: name => `Portfolio personal de ${name}: proyectos, ideas y enlaces.`,
+    workKicker: 'Hecho y publicado', workIntro: 'Productos reales, publicados y en uso.', noProjects: 'Todavía no hay proyectos publicados.',
+    shelfKicker: 'Tira del hilo', shelfTitle: 'En abierto', shelfIntro: 'Código público, herramientas y las notas detrás de cada producto.', noLinks: 'Todavía no hay enlaces publicados.',
+    noLink: 'Todavía en el horno', portfolio: 'Portfolio personal',
+    imageAlt: name => `Portfolio personal de ${name}: productos publicados, código y enlaces.`,
   },
   ca: {
     name: 'Català', locale: 'ca_ES', skip: 'Salta al contingut', mainNav: 'Principal', langNav: 'Idioma',
     projects: 'Projectes', links: 'Enllaços', contact: 'Escriu-me', hero: 'Presentació', seeProjects: 'Veure projectes',
-    workKicker: 'El que faig', workIntro: 'Un espai per a treballs, idees i experiments.', noProjects: 'Encara no hi ha projectes publicats.',
-    shelfKicker: 'Accessos directes', shelfTitle: 'A mà', shelfIntro: 'Els enllaços i recursos que vull trobar sense fer voltes.', noLinks: 'Encara no hi ha enllaços publicats.',
-    noLink: 'Encara sense enllaç', portfolio: 'Portfoli personal',
-    imageAlt: name => `Portfoli personal de ${name}: projectes, idees i enllaços.`,
+    workKicker: 'Fet i publicat', workIntro: 'Productes reals, publicats i en ús.', noProjects: 'Encara no hi ha projectes publicats.',
+    shelfKicker: 'Estira el fil', shelfTitle: 'En obert', shelfIntro: 'Codi públic, eines reals i les notes darrere cada producte en marxa.', noLinks: 'Encara no hi ha enllaços publicats.',
+    noLink: 'Encara al forn', portfolio: 'Portfoli personal',
+    imageAlt: name => `Portfoli personal de ${name}: productes publicats, codi i enllaços.`,
   },
   en: {
     name: 'English', locale: 'en_GB', skip: 'Skip to content', mainNav: 'Main', langNav: 'Language',
     projects: 'Projects', links: 'Links', contact: 'Get in touch', hero: 'Introduction', seeProjects: 'See projects',
-    workKicker: 'What I do', workIntro: 'A space for work, ideas and experiments.', noProjects: 'No projects published yet.',
-    shelfKicker: 'Shortcuts', shelfTitle: 'Close at hand', shelfIntro: 'The links and resources I want to find without searching.', noLinks: 'No links published yet.',
-    noLink: 'No link yet', portfolio: 'Personal portfolio',
-    imageAlt: name => `Personal portfolio of ${name}: projects, ideas and links.`,
+    workKicker: 'Built & shipped', workIntro: 'Real products, shipped and in use.', noProjects: 'No projects published yet.',
+    shelfKicker: 'Keep digging', shelfTitle: 'In the open', shelfIntro: 'Public code, working tools and the notes behind each live product.', noLinks: 'No links published yet.',
+    noLink: 'Still in the oven', portfolio: 'Personal portfolio',
+    imageAlt: name => `Personal portfolio of ${name}: live products, code and direct links.`,
   },
 };
 
@@ -88,7 +88,7 @@ function projectCard({ titulo, descripcion, categoria, url, imagen, logo }, i, p
   const hasLogo = typeof logo === 'string' && projectImages.has(logo.trim());
   const filename = hasLogo ? logo.trim() : typeof imagen === 'string' ? imagen.trim() : '';
   const cover = projectImages.has(filename)
-    ? `<img src="${base}proyectos/${escape(encodeURIComponent(filename))}" alt="" loading="lazy" decoding="async">`
+    ? `<img src="${base}proyectos/${escape(encodeURIComponent(filename))}" alt="" loading="lazy" decoding="async" fetchpriority="low">`
     : `<svg viewBox="0 0 320 120" fill="none" stroke="currentColor" stroke-width="1.3">${projectArt[i % projectArt.length]}</svg>`;
   return `<li>
     ${href ? `<a class="project-card" href="${href}" aria-labelledby="project-title-${i}">` : '<div class="project-card">'}
@@ -171,8 +171,10 @@ export function render(data, { url = siteUrl, styles, projectImages = new Set(),
   <link rel="icon" href="${base}icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="${base}icon-192.png">
   <link rel="manifest" href="${base}site.webmanifest" crossorigin="use-credentials">
-  <link rel="preload" href="${base}fonts/geist-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="${base}fonts/ibm-plex-sans-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="${base}fonts/geist-latin-variable.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high">
+  <link rel="preload" href="${base}fonts/ibm-plex-sans-latin-variable.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high">
+  <link rel="modulepreload" href="${base}laminar.js">
+  <link rel="modulepreload" href="${base}hero.js">
   ${styles ? `<style>${styles.replaceAll('url("./', `url("${base}`)}</style>` : `<link rel="stylesheet" href="${base}styles.css"><link rel="stylesheet" href="${base}laminar.css">`}
 </head>
 <body id="inicio">
@@ -231,11 +233,20 @@ export function render(data, { url = siteUrl, styles, projectImages = new Set(),
   </main>
   <script type="module" src="${base}hero.js"></script>
   <script type="module" src="${base}laminar.js"></script>
-  <script type="module" src="${base}astrolabe.js"></script>
 </body>
 </html>
 `;
 }
+
+const minifyCss = css => css
+  .replace(/\/\*[\s\S]*?\*\//g, '')
+  .replace(/\s+/g, ' ')
+  .replace(/\s*([{};,])\s*/g, '$1')
+  .replace(/:\s+/g, ':')
+  .replace(/\(\s+/g, '(')
+  .replace(/\s+\)/g, ')')
+  .replace(/;}/g, '}')
+  .trim();
 
 if (process.argv[1] && import.meta.url === pathToFileURL(realpathSync(process.argv[1])).href) {
   const root = new URL('./', import.meta.url);
@@ -248,7 +259,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(realpathSync(process.ar
     throw new Error(`contenido.json: ${error.message}`, { cause: error });
   }
   const source = new URL('site/', root);
-  const styles = (await Promise.all(['styles.css', 'laminar.css'].map(file => readFile(new URL(file, source), 'utf8')))).join('\n');
+  const styles = minifyCss((await Promise.all(['styles.css', 'laminar.css'].map(file => readFile(new URL(file, source), 'utf8')))).join('\n'));
   const files = await readdir(new URL('proyectos/', source), { withFileTypes: true }).catch(error => {
     if (error.code === 'ENOENT') return [];
     throw error;

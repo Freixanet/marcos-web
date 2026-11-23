@@ -108,6 +108,16 @@ export function mountAstrolabe(host, config = CONFIG) {
     c = canvas.getContext("2d");
   if (!c) return () => {};
   const plate = document.createElement("canvas");
+  const sheenCanvas = document.createElement("canvas");
+  sheenCanvas.width = sheenCanvas.height = 64;
+  {
+    const sg = sheenCanvas.getContext("2d");
+    const grad = sg.createRadialGradient(32, 32, 0, 32, 32, 32);
+    grad.addColorStop(0, config.accentColor);
+    grad.addColorStop(1, "transparent");
+    sg.fillStyle = grad;
+    sg.fillRect(0, 0, 64, 64);
+  }
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
   const outer = spring(-0.57, 22, 8.1),
     inner = spring(2.28, 36, 9.6),
@@ -130,15 +140,22 @@ export function mountAstrolabe(host, config = CONFIG) {
     w = host.clientWidth;
     h = host.clientHeight;
     if (!w || !h) return;
-    dpr = Math.min(window.devicePixelRatio || 1, 3);
-    canvas.width = Math.round(w * dpr);
-    canvas.height = Math.round(h * dpr);
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const targetW = Math.round(w * dpr);
+    const targetH = Math.round(h * dpr);
+    if (canvas.width !== targetW || canvas.height !== targetH) {
+      canvas.width = targetW;
+      canvas.height = targetH;
+    }
     scale = (0.9025 * Math.min(w, h)) / 382;
-    plate.width = plate.height = Math.max(1, Math.ceil(410 * scale * dpr));
-    const g = plate.getContext("2d");
-    g.translate(plate.width / 2, plate.height / 2);
-    g.scale(plate.width / 410, plate.height / 410);
-    engravedPlate(g, config.complexity);
+    const plateSize = Math.max(1, Math.ceil(410 * scale * dpr));
+    if (plate.width !== plateSize) {
+      plate.width = plate.height = plateSize;
+      const g = plate.getContext("2d");
+      g.translate(plate.width / 2, plate.height / 2);
+      g.scale(plate.width / 410, plate.height / 410);
+      engravedPlate(g, config.complexity);
+    }
     draw();
   }
   function draw() {
@@ -208,13 +225,9 @@ export function mountAstrolabe(host, config = CONFIG) {
       c.lineWidth = 1.25;
       trace(c, route(origin, target, 33), reveal);
       if (reveal >= 1) {
-        const sheen = c.createRadialGradient(...target, 0, ...target, 16);
-        sheen.addColorStop(0, config.accentColor);
-        sheen.addColorStop(1, "transparent");
         c.save();
         c.globalAlpha *= 0.08 + pulse * 0.11;
-        c.fillStyle = sheen;
-        c.fillRect(target[0] - 16, target[1] - 16, 32, 32);
+        c.drawImage(sheenCanvas, target[0] - 16, target[1] - 16, 32, 32);
         c.restore();
         c.beginPath();
         c.arc(...target, 2.15, 0, TAU);

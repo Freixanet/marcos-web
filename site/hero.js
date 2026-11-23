@@ -21,15 +21,24 @@ const menu = document.querySelector('.menu-toggle');
 const options = document.querySelector('.header-options');
 const main = document.querySelector('main');
 const skip = document.querySelector('.skip');
+let astrolabeLoad;
+function ensureAstrolabe() {
+  if (!astrolabeLoad) {
+    astrolabeLoad = import('./astrolabe.js').catch(() => { astrolabeLoad = null; });
+  }
+}
 function setMenu(open) {
+  if (open) ensureAstrolabe();
   menu.setAttribute('aria-expanded', String(open));
   document.documentElement.classList.toggle('menu-open', open);
   main.inert = open;
   skip.inert = open;
+  document.dispatchEvent(new CustomEvent('portfolio:menu', { detail: { open } }));
 }
 function closeMenu() {
   if (menu.getAttribute('aria-expanded') === 'true') setMenu(false);
 }
+menu.addEventListener('pointerdown', ensureAstrolabe, { passive: true, once: true });
 menu.addEventListener('click', () => setMenu(menu.getAttribute('aria-expanded') !== 'true'));
 document.addEventListener('click', event => {
   if (menu.contains(event.target)) return;
