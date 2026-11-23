@@ -86,6 +86,19 @@
     },
     {
       "titulo": {
+        "es": "Correo",
+        "ca": "Correu",
+        "en": "Email"
+      },
+      "descripcion": {
+        "es": "mfreixanet@icloud.com · Proyectos, colaboraciones o puestos.",
+        "ca": "mfreixanet@icloud.com · Projectes, col·laboracions o ofertes.",
+        "en": "mfreixanet@icloud.com · Projects, collaborations or roles."
+      },
+      "url": "mailto:mfreixanet@icloud.com"
+    },
+    {
+      "titulo": {
         "es": "Cuaderno",
         "ca": "Quadern",
         "en": "Field notes"

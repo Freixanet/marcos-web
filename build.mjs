@@ -182,7 +182,7 @@ export function render(data, { url = siteUrl, styles, projectImages = new Set(),
   <header class="masthead">
     <div class="shell masthead-inner">
       <a class="brand" href="#inicio">${fullName}<span aria-hidden="true">.</span></a>
-      <button class="brand menu-toggle" type="button" aria-expanded="false" aria-controls="header-options" aria-label="${fullName} · ${({es:'Menú',ca:'Menú',en:'Menu'})[lang]}">${fullName}<span aria-hidden="true">.</span></button>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="header-options" aria-label="${({es:'Menú',ca:'Menú',en:'Menu'})[lang]}"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false"><line class="bar-top" x1="3" y1="7" x2="17" y2="7"/><line class="bar-bottom" x1="3" y1="13" x2="17" y2="13"/></svg></button>
       <div class="header-options" id="header-options">
         <nav class="main-nav" aria-label="${t.mainNav}">
           <a href="#proyectos">${t.projects}</a>
