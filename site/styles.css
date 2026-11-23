@@ -125,15 +125,16 @@ nav a { display: inline-flex; align-items: center; min-height: 44px; font-size: 
 .section-head { display: flex; align-items: end; justify-content: space-between; flex-wrap: wrap; gap: 12px 24px; margin-bottom: 25px; }
 h2 { margin-top: 7px; font-size: clamp(2.65rem, 5.2vw, 4.4rem); font-weight: 400; letter-spacing: -.045em; line-height: 1.08; }
 .section-head > p { padding-bottom: 3px; }
-.project-grid { display: grid; grid-auto-rows: 1fr; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 16px; }
+/* Tarjetas de ancho contenido (máx. 280 px) repartidas a todo el ancho de la sección. */
+.project-grid { display: grid; grid-auto-rows: 1fr; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 280px)); justify-content: space-between; gap: 16px; }
 .project-grid > li { display: grid; }
 .project-card { position: relative; display: flex; flex-direction: column; overflow: hidden; border-radius: var(--radius); overflow-wrap: anywhere; contain: layout style paint; transition: box-shadow .16s ease, transform 160ms var(--ease-out); box-shadow: 0 1px 2px light-dark(rgb(33 33 30 / 5%), transparent), 0 10px 28px light-dark(rgb(33 33 30 / 7%), transparent); }
 a.project-card:active { transform: scale(0.985); }
 .project-card::before, .project-card::after { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1; }
 .project-card::before { background: url("./card-grain.png") repeat; opacity: .02; }
 .project-card::after { box-shadow: inset 0 1px 0 rgb(255 255 255 / 8%); }
-.project-art { display: grid; place-items: center; position: relative; min-height: 128px; overflow: hidden; background-image: linear-gradient(to right, #211f1b15 1px, transparent 1px), linear-gradient(to bottom, #211f1b15 1px, transparent 1px); background-size: 20px 20px; }
-.project-art svg { width: min(100%, 360px); height: 128px; }
+.project-art { display: grid; place-items: center; position: relative; aspect-ratio: 4 / 3; overflow: hidden; background-image: linear-gradient(to right, #211f1b15 1px, transparent 1px), linear-gradient(to bottom, #211f1b15 1px, transparent 1px); background-size: 20px 20px; }
+.project-art svg { width: 100%; height: auto; }
 .project-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .art-0 { background-color: #e8beab; color: #813421; }
 .art-1 { background-color: #dde1cd; color: #444c35; }
@@ -181,7 +182,7 @@ a.shortcut { transition: border-color .16s ease; }
   .project-category { display: inline-block; font: 400 .75rem/1.3 var(--font); letter-spacing: normal; color: var(--accent); }
   .project-grid { grid-template-columns: 1fr; gap: 12px; }
   .project-card { display: grid; grid-template-columns: min(30%, 180px) minmax(0, 1fr); }
-  .project-art { min-height: 0; }
+  .project-art { aspect-ratio: auto; }
   .project-art svg { width: 100%; height: auto; }
   .project-content { min-width: 0; padding: 14px clamp(12px, 3.5vw, 20px); }
   .project-content h3 + p { margin: 6px 0 4px; font-size: .9375rem; line-height: 1.45; }
@@ -242,8 +243,6 @@ a.shortcut { transition: border-color .16s ease; }
   .hero-copy { max-width: clamp(535px, 40vw, 920px); }
   .hero-role { font-size: clamp(3.2rem, 1.2rem + 2.3vw, 4.6rem); }
   .hero-intro { font-size: clamp(1.125rem, .9rem + .35vw, 1.35rem); }
-  .project-art { min-height: clamp(128px, 9vw, 200px); }
-  .project-art svg { height: clamp(128px, 9vw, 200px); }
 }
 
 /* Reducir movimiento: más suave, no cero. Sin desplazamientos, solo fundidos cortos y una pulsación casi imperceptible. */
