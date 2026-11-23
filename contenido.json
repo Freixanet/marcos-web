@@ -14,21 +14,6 @@
   "contacto": "mailto:mfreixanet@icloud.com",
   "proyectos": [
     {
-      "titulo": "Unshot Studio",
-      "logo": "logo-unshot.svg",
-      "descripcion": {
-        "es": "Convierte una foto del móvil en imágenes de catálogo listas para vender.",
-        "ca": "Converteix una foto del mòbil en imatges de catàleg llestes per vendre.",
-        "en": "Turns a quick phone photo into studio-grade catalog and lifestyle shots."
-      },
-      "categoria": {
-        "es": "IA · Python",
-        "ca": "IA · Python",
-        "en": "AI · Python"
-      },
-      "url": "https://github.com/Freixanet/unshot"
-    },
-    {
       "titulo": "Alice",
       "logo": "logo-alice.png",
       "descripcion": {
@@ -42,6 +27,21 @@
         "en": "iOS app · Swift"
       },
       "url": "https://myalice.app/"
+    },
+    {
+      "titulo": "Voto en claro",
+      "logo": "logo-votoenclaro.svg",
+      "descripcion": {
+        "es": "Compara propuestas electorales por tema, cada una con su fuente y fecha.",
+        "ca": "Compara propostes electorals per tema, cadascuna amb la font i la data.",
+        "en": "Side-by-side comparison of party proposals by topic, with source and date."
+      },
+      "categoria": {
+        "es": "Web · JavaScript",
+        "ca": "Web · JavaScript",
+        "en": "Web · JavaScript"
+      },
+      "url": "https://freixanet.github.io/voto-en-claro/"
     },
     {
       "titulo": "Ep, Súria!",
@@ -59,19 +59,19 @@
       "url": "https://freixanet.github.io/suria/"
     },
     {
-      "titulo": "Voto en claro",
-      "logo": "logo-votoenclaro.svg",
+      "titulo": "Unshot Studio",
+      "logo": "logo-unshot.svg",
       "descripcion": {
-        "es": "Compara propuestas electorales por tema, cada una con su fuente y fecha.",
-        "ca": "Compara propostes electorals per tema, cadascuna amb la font i la data.",
-        "en": "Side-by-side comparison of party proposals by topic, with source and date."
+        "es": "Convierte una foto del móvil en imágenes de catálogo listas para vender.",
+        "ca": "Converteix una foto del mòbil en imatges de catàleg llestes per vendre.",
+        "en": "Turns a quick phone photo into studio-grade catalog and lifestyle shots."
       },
       "categoria": {
-        "es": "Web · JavaScript",
-        "ca": "Web · JavaScript",
-        "en": "Web · JavaScript"
+        "es": "IA · Python",
+        "ca": "IA · Python",
+        "en": "AI · Python"
       },
-      "url": "https://freixanet.github.io/voto-en-claro/"
+      "url": "https://github.com/Freixanet/unshot"
     }
   ],
   "enlaces": [

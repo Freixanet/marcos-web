@@ -149,3 +149,17 @@ Por orden de impacto:
 5. ~~**Títulos de sección genéricos**~~ → hecho: «Hecho y publicado», «Tira del hilo · En abierto».
 6. **Falta la pieza para empresas** → una línea sobre ti y un enlace a CV o LinkedIn.
 7. ~~**Recursos de direcciones anteriores**~~ → hecho: archivados en `archivo/site/`, fuera de lo que se publica.
+8. ~~**Imagen para compartir** de la dirección anterior~~ → hecho: hero negro, Laminar y titular actual (`herramientas/og-image.html`). En la imagen el titular va en dos líneas, porque en tres no baja del 20 % de diferencia.
+9. ~~**Orden de los proyectos**~~ → hecho: del más sólido al más experimental (Alice, Voto en claro, Ep, Súria!, Unshot Studio).
+
+### Para más adelante (valor percibido)
+
+Decidido aplazar, en este orden de impacto:
+
+- **Dominio propio** (y correo en ese dominio): `freixanet.github.io/marcos-web` parece un proyecto de prácticas.
+- **Capturas del producto en vez del logo** en las tarjetas, y un dato concreto por proyecto (publicado, usuarios, cifras).
+- **Unshot enlaza a un repositorio:** enlazar a una demo o página propia cuando exista.
+- **Quién eres:** una línea sobre trayectoria y forma de trabajar, LinkedIn o CV (es el punto 6).
+- **Un caso de estudio** del proyecto más fuerte, contado como paso de turbulento a laminar.
+- **Una prueba de terceros:** una cita, una mención o una valoración.
+- **«Field notes» sin destino** resta valor mientras siga a medias (es el punto 4).

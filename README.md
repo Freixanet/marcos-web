@@ -71,7 +71,13 @@ El resultado está en `dist/`. Puedes publicarlo tal cual en un alojamiento est�
 
 [`site.config.mjs`](site.config.mjs) define la URL pública de respaldo (la vista previa de Devin). Para otro dominio, ejecuta `SITE_URL=https://tu-dominio.es npm run build`. Se utiliza para `og:url` y las imágenes absolutas de Open Graph y Twitter. El alojamiento debe permitir el acceso público a la página y a `og-image.jpg` para que los rastreadores puedan leerlos; una vista previa con inicio de sesión no genera tarjetas públicas.
 
-La tarjeta está en [`site/og-image.jpg`](site/og-image.jpg) (1200 × 630). El build incorpora la hoja CSS pequeña al HTML para evitar una petición bloqueante y añade el módulo local sin dependencias [`site/hero.js`](site/hero.js) para la animación del hero; no carga JavaScript ni fuentes externas.
+La tarjeta está en [`site/og-image.jpg`](site/og-image.jpg) (1200 × 630). Se genera desde [`herramientas/og-image.html`](herramientas/og-image.html), que usa el mismo `laminar.js` del hero. Para regenerarla tras cambiar el titular:
+
+```bash
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --allow-file-access-from-files --hide-scrollbars --force-device-scale-factor=2 --window-size=1200,630 --virtual-time-budget=4000 --screenshot=/tmp/og.png "file://$PWD/herramientas/og-image.html" && sips -z 630 1200 -s format jpeg -s formatOptions 88 /tmp/og.png --out site/og-image.jpg
+```
+
+El build incorpora la hoja CSS pequeña al HTML para evitar una petición bloqueante y añade el módulo local sin dependencias [`site/hero.js`](site/hero.js) para la animación del hero; no carga JavaScript ni fuentes externas.
 
 ## Tipografía
 
