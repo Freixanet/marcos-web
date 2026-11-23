@@ -148,7 +148,7 @@ export function render(data, { url = siteUrl, styles, projectImages = new Set(),
       if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
     } catch {}
   </script>
-  <meta name="theme-color" content="#f5f2ea">
+  <meta name="theme-color" content="#000000">
   <title>${fullName} — ${t.portfolio}</title>
   <link rel="canonical" href="${escape(pageUrl.href)}">
   ${alternates}

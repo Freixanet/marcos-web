@@ -5,7 +5,7 @@ function applyTheme() {
   const chosen = document.documentElement.dataset.theme;
   dark = chosen ? chosen === 'dark' : systemTheme.matches;
   themeButton.setAttribute('aria-pressed', String(dark));
-  document.querySelector('meta[name="theme-color"]').content = dark ? '#000000' : '#f5f2ea';
+  // La barra del navegador queda siempre en negro, como el hero, también en tema claro (theme-color fijo en el HTML).
 }
 themeButton.addEventListener('click', () => {
   const theme = dark ? 'light' : 'dark';

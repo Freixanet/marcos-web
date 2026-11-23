@@ -53,8 +53,11 @@ html[data-theme="dark"] { color-scheme: dark; }
 .theme-toggle[hidden] { display: none; }
 .theme-toggle:hover { background: var(--surface); }
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
-body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font); }
+/* Fondo de la página en negro, como el hero, para que la barra del navegador y el rebote al tirar de la página
+   sean negros también en tema claro. El contenido (main) lleva el fondo del tema a todo el ancho. */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; background: #000; }
+main { background: var(--bg); }
+body { margin: 0; background: #000; color: var(--text); font-family: var(--font); }
 a { color: inherit; text-decoration: none; }
 a, button { touch-action: manipulation; }
 :focus-visible { outline: 2px solid currentColor; outline-offset: 5px; }
