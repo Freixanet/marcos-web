@@ -123,6 +123,8 @@ Referencia: el titular actual en inglés tiene tres líneas de 443, 456 y 417 px
 
 - **Sí:** líneas, filamentos, corrientes, convergencias y retículas que se ordenan.
 - **No:** astrolabios, brújulas, radares o marcas de grados (estética HUD); nada figurativo (cerebros, neuronas, caballos de ajedrez, bombillas); clichés de IA (redes neuronales de neón, lluvia tipo Matrix).
+- **Sin flechas para indicar enlaces** (↗, →). Que algo es clicable se nota por el cursor y por la sombra que aparece al pasar el ratón, no por un icono.
+- **Sin bordes para separar tarjetas del fondo.** Las tarjetas se distinguen por su imagen y por el tono de su superficie, no por un contorno.
 - **Excepción por ahora:** el astrolabio del menú móvil se mantiene por decisión propia. La regla anterior vale para el resto de la web.
 
 ## 6. Antes de cualquier cambio
