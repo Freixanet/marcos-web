@@ -58,7 +58,9 @@ ul { list-style: none; margin: 0; padding: 0; }
 
 .masthead { border-bottom: 1px solid var(--border); }
 .masthead-inner { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-.brand { display: inline-grid; place-content: center; grid-auto-flow: column; min-width: 46px; min-height: 46px; padding-inline: 4px; color: var(--text); text-decoration: none; font-size: 1rem; letter-spacing: -.07em; }
+.brand { display: inline-flex; align-items: center; justify-content: center; flex: none; min-width: 68px; min-height: 48px; color: var(--text); text-decoration: none; font: italic 700 2rem/1 var(--display); letter-spacing: -.1em; }
+.brand-mark { display: block; width: 68px; height: 44px; }
+.brand-dot { fill: var(--accent); }
 .brand span { color: var(--accent); }
 .brand:focus-visible { outline-color: var(--text); }
 nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: clamp(8px, 3vw, 36px); }
@@ -133,5 +135,8 @@ a.shortcut .shortcut-label strong { text-decoration: underline; text-underline-o
 }
 
 @media (max-width: 360px) {
+  .masthead-inner { gap: 8px; }
+  .brand { min-width: 60px; }
+  .brand-mark { width: 60px; }
   .hero h1 { font-size: clamp(2rem, 13vw, 3.4rem); }
 }
