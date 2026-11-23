@@ -23,13 +23,17 @@ El hero Laminar ya lo cuenta sin palabras: filamentos turbulentos que se ordenan
 
 **Frase principal (en uso):**
 
-- EN: *I turn complex things into clear, finished products.*
-- ES: *Hago productos claros y acabados de lo complejo.*
-- CA: *Faig del que és complex productes clars i acabats.*
+- EN: *I turn complex ideas into clear, shipped products.*
+- ES: *Convierto lo complejo en productos claros y reales.*
+- CA: *Converteixo allò complex en productes clars i reals.*
 
-Las tres caben en dos líneas simétricas: diferencia de 4–8 % entre líneas a 375, 1280 y 1920 px. Cada idioma está escrito a la medida, por eso no son traducciones literales. Ninguna versión en tres líneas bajaba del 21 % en inglés y catalán.
+Las tres caben en dos líneas simétricas: diferencia de 1–4 % entre líneas a 375 y 1280 px. Cada idioma está escrito a la medida, por eso no son traducciones literales.
 
-**Subtítulo, con las pruebas:** *Apps de iPhone, webs y los agentes de IA que hay detrás. Diseñados, construidos y publicados por mí, desde Barcelona.* (en uso)
+**Subtítulo (en uso):**
+
+- EN: *iPhone apps, web products and AI agents. Designed, built and shipped from Barcelona.*
+- ES: *Apps iOS, webs y agentes de IA. Diseñados, construidos y publicados desde Barcelona.*
+- CA: *Apps iOS, webs i agents d'IA. Dissenyats, construïts i publicats des de Barcelona.*
 
 Alternativas, si la principal no convence:
 
@@ -61,10 +65,10 @@ Una mezcla con proporciones fijas, para que no se convierta en un poco de todo:
 
 - Frases cortas. Verbos concretos. Ningún adjetivo que no se pueda demostrar («innovador», «apasionado», «soluciones»).
 - El humor nunca va en el titular ni en la descripción de un proyecto. Va en los márgenes.
-- Ejemplos con los textos actuales:
-  - «Lo que hago» → «Hecho y publicado»
-  - «A mano» → «Lo que uso a diario»
-  - «Sin enlace aún» → «Todavía en el horno»
+- Textos en uso que siguen esta voz:
+  - Proyectos: «Hecho y publicado» · «Productos reales, publicados y en uso.»
+  - Enlaces: «Tira del hilo» · «En abierto»
+  - Sin enlace todavía: «Todavía en el horno»
 
 ## 5. Sistema visual
 
@@ -140,7 +144,7 @@ Por orden de impacto:
 1. ~~**El titular del hero**~~ → hecho: frase principal y subtítulo nuevos, con simetría de líneas en los tres idiomas.
 2. ~~**Diez naranjas**~~ → hecho: `--ember`, `--ember-ink` y `--ember-glow` en `styles.css`; los estados al pasar el ratón se derivan de ellos.
 3. ~~**El astrolabio del menú móvil**~~ → se mantiene por ahora, como excepción explícita (ver «Motivos»). Si más adelante se cambia, la alternativa es un fragmento de Laminar o nada.
-4. **«Recursos · Sin enlace aún»** es un hueco visible → darle destino o quitarlo.
-5. **Títulos de sección genéricos** («Lo que hago», «A mano») → reescribirlos con la voz de la sección 4.
+4. **«Cuaderno / Field notes»** sigue sin destino y muestra «Todavía en el horno» → darle una dirección cuando exista, o quitarlo.
+5. ~~**Títulos de sección genéricos**~~ → hecho: «Hecho y publicado», «Tira del hilo · En abierto».
 6. **Falta la pieza para empresas** → una línea sobre ti y un enlace a CV o LinkedIn.
 7. ~~**Recursos de direcciones anteriores**~~ → hecho: archivados en `archivo/site/`, fuera de lo que se publica.
